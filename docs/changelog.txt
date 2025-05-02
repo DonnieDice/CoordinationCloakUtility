@@ -1,3 +1,6 @@
+v3.1.5-------------------------------------------------------------------
+- Updated - TOC version bump [CoordinationCloakUtility.toc]
+- Updated - Email address updated in TOC [CoordinationCloakUtility.toc]
 v3.1.4-------------------------------------------------------------------
 - Updated - Retail TOC to reflect version 110100 [CoordinationCloakUtility.toc]
 - Updated - Retail BLU version number to v3.1.4 in TOC [CoordinationCloakUtility.toc]

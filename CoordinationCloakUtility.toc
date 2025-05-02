@@ -1,10 +1,10 @@
-## Interface: 110100
-## Version: v3.1.4
+## Interface: 110105
+## Version: v3.1.5
 ## Title: |cff950041C|r|cffffffffoordination|r |cff950041C|r|cffffffffloak|r |cff950041U|r|cfffffffftility!|r 
 ## Notes: Coordination Cloak Made Easy!  |n|r  |cff950041/ccu -|r Use AddOn!  |n|r   |cff950041DonnieDice|r
 
 ## Author: DonnieDice
-## Email: joseph@donniedice.com
+## Email: joseph@cranberriestudios.com
 ## SavedVariables: CCUDB
 ## IconTexture: Interface\AddOns\CoordinationCloakUtility\images\icon
 
