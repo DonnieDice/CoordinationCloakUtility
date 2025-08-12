@@ -12,6 +12,7 @@ env:
   WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
   WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
   GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
 jobs:
   release:
@@ -33,26 +34,264 @@ jobs:
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
             TAG_NAME=${{ github.ref }}
             if [[ "$TAG_NAME" == *"beta"* ]]; then
-              echo "::set-output name=release_type::beta"
+              echo "release_type=beta" >> $GITHUB_OUTPUT
             elif [[ "$TAG_NAME" == *"alpha"* ]]; then
-              echo "::set-output name=release_type::alpha"
+              echo "release_type=alpha" >> $GITHUB_OUTPUT
             else
-              echo "::set-output name=release_type::release"
+              echo "release_type=release" >> $GITHUB_OUTPUT
             fi
           else
-            echo "::set-output name=release_type::alpha"
+            echo "release_type=alpha" >> $GITHUB_OUTPUT
           fi
 
       - name: Extract Version from TOC
         id: extract_version
         run: |
           version=$(grep -oP '^## Version: \K(.*)' ./*.toc)
-          echo "::set-output name=version::$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%S.000Z)" >> $GITHUB_OUTPUT
 
       - name: Package and Release
         uses: BigWigsMods/packager@master
         with:
           release-type: ${{ steps.set_release_type.outputs.release_type }}
+
+      - name: Send Discord Success Notification
+        if: success() && steps.set_release_type.outputs.release_type == 'release'
+        run: |
+          # Create formatted changelog excerpt
+          CHANGELOG_PREVIEW="Latest updates available in CHANGES.md"
+          if [ -f "docs/CHANGES.md" ]; then
+            CHANGELOG_PREVIEW=$(head -n 5 docs/CHANGES.md | sed 's/"/\\"/g' | tr '\n' ' ' | cut -c 1-200)
+          fi
+          
+          # Send Discord notification with enhanced formatting
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{
+              "username": "CCU Release Bot",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+              "embeds": [{
+                "author": {
+                  "name": "Coordination Cloak Utility",
+                  "icon_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+                  "url": "https://github.com/DonnieDice/CoordinationCloakUtility"
+                },
+                "title": "🎉 Version ${{ steps.extract_version.outputs.version }} Released!",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/releases/tag/${{ github.ref_name }}",
+                "description": "**Coordination Cloak Utility** has been successfully released and is now available for download across all addon platforms.",
+                "color": 9830721,
+                "fields": [
+                  {
+                    "name": "📦 Version",
+                    "value": "```${{ steps.extract_version.outputs.version }}```",
+                    "inline": true
+                  },
+                  {
+                    "name": "🏷️ Release Type",
+                    "value": "```Release```",
+                    "inline": true
+                  },
+                  {
+                    "name": "🚀 Git Tag",
+                    "value": "```${{ github.ref_name }}```",
+                    "inline": true
+                  },
+                  {
+                    "name": "📥 Quick Downloads",
+                    "value": "**[⬇ CurseForge](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility)** • **[⬇ GitHub](https://github.com/DonnieDice/CoordinationCloakUtility/releases/latest)** • **[⬇ Wago](https://addons.wago.io/addons/coordinationcloakutility)** • **[⬇ WoWI](https://www.wowinterface.com/downloads/info26709)**",
+                    "inline": false
+                  },
+                  {
+                    "name": "📋 What'"'"'s New",
+                    "value": "'"${CHANGELOG_PREVIEW}"'...\n\n**[View Full Changelog →](https://github.com/DonnieDice/CoordinationCloakUtility/blob/main/docs/CHANGES.md)**",
+                    "inline": false
+                  },
+                  {
+                    "name": "✨ Core Features",
+                    "value": "```• Auto-detect teleportation cloaks\n• One-click cloak swapping\n• Combat-safe operations\n• Cooldown tracking\n• Multiple cloak support```",
+                    "inline": false
+                  },
+                  {
+                    "name": "💬 Support",
+                    "value": "[Report Issues](https://github.com/DonnieDice/CoordinationCloakUtility/issues) • [Buy Me a Coffee ☕](https://www.buymeacoffee.com/donniedice)",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "CCU v${{ steps.extract_version.outputs.version }} • Coordination Cloak Utility",
+                  "icon_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png"
+                },
+                "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
+              }]
+            }' ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Send Discord Beta Notification
+        if: success() && steps.set_release_type.outputs.release_type == 'beta'
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{
+              "username": "CCU Beta Bot",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+              "embeds": [{
+                "author": {
+                  "name": "CCU Beta Build",
+                  "icon_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png"
+                },
+                "title": "🔧 Beta Version ${{ steps.extract_version.outputs.version }} Available",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/releases/tag/${{ github.ref_name }}",
+                "description": "A new **beta** version of Coordination Cloak Utility is available for testing.\n\n⚠️ **This is a pre-release version** - Please report any issues you encounter.",
+                "color": 16776960,
+                "fields": [
+                  {
+                    "name": "📦 Version",
+                    "value": "```${{ steps.extract_version.outputs.version }}-beta```",
+                    "inline": true
+                  },
+                  {
+                    "name": "🏷️ Build Type",
+                    "value": "```Beta```",
+                    "inline": true
+                  },
+                  {
+                    "name": "🚀 Git Tag",
+                    "value": "```${{ github.ref_name }}```",
+                    "inline": true
+                  },
+                  {
+                    "name": "📥 Beta Downloads",
+                    "value": "**[⬇ CurseForge Beta](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility/files?filter-status=1)** • **[⬇ GitHub Pre-release](https://github.com/DonnieDice/CoordinationCloakUtility/releases)**",
+                    "inline": false
+                  },
+                  {
+                    "name": "🧪 Testing Focus",
+                    "value": "```• Test cloak swapping functionality\n• Verify combat restrictions\n• Check cooldown tracking\n• Report UI issues```",
+                    "inline": false
+                  },
+                  {
+                    "name": "🐛 Report Issues",
+                    "value": "Found a bug? **[Report it here →](https://github.com/DonnieDice/CoordinationCloakUtility/issues/new)**",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "CCU Beta v${{ steps.extract_version.outputs.version }} • Pre-release Build",
+                  "icon_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png"
+                },
+                "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
+              }]
+            }' ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Send Discord Alpha Notification
+        if: success() && steps.set_release_type.outputs.release_type == 'alpha'
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{
+              "username": "CCU Dev Bot",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+              "embeds": [{
+                "author": {
+                  "name": "CCU Development Build",
+                  "icon_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png"
+                },
+                "title": "🧪 Alpha Build ${{ steps.extract_version.outputs.version }}",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/commits/${{ github.sha }}",
+                "description": "**Development build** of Coordination Cloak Utility for internal testing.\n\n🚨 **WARNING**: This is an unstable alpha build and may contain breaking changes.",
+                "color": 8421504,
+                "fields": [
+                  {
+                    "name": "📦 Version",
+                    "value": "```${{ steps.extract_version.outputs.version }}-alpha```",
+                    "inline": true
+                  },
+                  {
+                    "name": "🏷️ Build Type",
+                    "value": "```Alpha```",
+                    "inline": true
+                  },
+                  {
+                    "name": "🔨 Commit",
+                    "value": "```${{ github.sha }}```",
+                    "inline": false
+                  },
+                  {
+                    "name": "⚠️ Alpha Build Notice",
+                    "value": "```diff\n- Unstable development build\n- May contain breaking changes\n- Not recommended for regular use\n- Debug logging may be enabled```",
+                    "inline": false
+                  },
+                  {
+                    "name": "👥 Testers Only",
+                    "value": "This build is intended for **development testing only**. Regular users should wait for a stable release.",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "CCU Alpha v${{ steps.extract_version.outputs.version }} • Development Build • Commit: ${{ github.sha }}",
+                  "icon_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png"
+                },
+                "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
+              }]
+            }' ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Send Discord Failure Notification
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{
+              "username": "CCU Build Bot",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+              "content": "@here Build failure detected!",
+              "embeds": [{
+                "author": {
+                  "name": "Build System",
+                  "icon_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png"
+                },
+                "title": "❌ Release Workflow Failed",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/${{ github.run_id }}",
+                "description": "The release workflow for **Coordination Cloak Utility** has encountered an error and requires attention.",
+                "color": 15158332,
+                "fields": [
+                  {
+                    "name": "📦 Version Attempted",
+                    "value": "```${{ steps.extract_version.outputs.version || 'Unknown' }}```",
+                    "inline": true
+                  },
+                  {
+                    "name": "🏷️ Release Type",
+                    "value": "```${{ steps.set_release_type.outputs.release_type || 'Unknown' }}```",
+                    "inline": true
+                  },
+                  {
+                    "name": "❌ Status",
+                    "value": "```Failed```",
+                    "inline": true
+                  },
+                  {
+                    "name": "🔨 Failed Commit",
+                    "value": "```${{ github.sha }}```",
+                    "inline": false
+                  },
+                  {
+                    "name": "📋 Workflow Details",
+                    "value": "**[🔍 View Full Workflow Log →](https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/${{ github.run_id }})**\n\nWorkflow: `${{ github.workflow }}`\nRun ID: `${{ github.run_id }}`\nRun Number: `${{ github.run_number }}`",
+                    "inline": false
+                  },
+                  {
+                    "name": "🚨 Action Required",
+                    "value": "```diff\n+ Check workflow logs for error details\n+ Fix identified issues\n+ Re-run workflow or push new tag```",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "CCU Build System • Workflow Failed • Run #${{ github.run_number }}",
+                  "icon_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png"
+                },
+                "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
+              }]
+            }' ${{ secrets.DISCORD_WEBHOOK }}
 
       - name: Parse Changelog
         if: ${{ steps.set_release_type.outputs.release_type != 'alpha' }}
