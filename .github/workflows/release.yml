@@ -12,7 +12,7 @@ env:
   WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
   WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
   GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  DISCORD_WEBHOOK: https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
 jobs:
   release:
@@ -124,7 +124,7 @@ jobs:
                 },
                 "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
               }]
-            }' ${{ secrets.DISCORD_WEBHOOK }}
+            }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Send Discord Beta Notification
         if: success() && steps.set_release_type.outputs.release_type == 'beta'
@@ -181,7 +181,7 @@ jobs:
                 },
                 "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
               }]
-            }' ${{ secrets.DISCORD_WEBHOOK }}
+            }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Send Discord Alpha Notification
         if: success() && steps.set_release_type.outputs.release_type == 'alpha'
@@ -233,7 +233,7 @@ jobs:
                 },
                 "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
               }]
-            }' ${{ secrets.DISCORD_WEBHOOK }}
+            }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Send Discord Failure Notification
         if: failure()
@@ -291,7 +291,7 @@ jobs:
                 },
                 "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
               }]
-            }' ${{ secrets.DISCORD_WEBHOOK }}
+            }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Parse Changelog
         if: ${{ steps.set_release_type.outputs.release_type != 'alpha' }}
