@@ -59,10 +59,43 @@ jobs:
       - name: Send Discord Success Notification
         if: success() && steps.set_release_type.outputs.release_type == 'release'
         run: |
+          CHANGELOG=$(head -n 10 docs/CHANGES.md | tail -n +2 | sed 's/^- /• /g' | head -c 500)
           curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
-              "content": "**CCU ${{ steps.extract_version.outputs.version }}** has been released!\n<https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility>"
+              "username": "CCU Update",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+              "embeds": [{
+                "title": "🎉 CCU | Coordination Cloak Utility - ${{ steps.extract_version.outputs.version }}",
+                "description": "**Teleport with ease!** A new version of CCU has been released!\n\n🔄 **What'"'"'s New:**\n'"${CHANGELOG}"'",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/releases/tag/${{ github.ref_name }}",
+                "color": 9830721,
+                "thumbnail": {
+                  "url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png"
+                },
+                "fields": [
+                  {
+                    "name": "📥 Downloads",
+                    "value": "[CurseForge](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility)\n[Wago.io](https://addons.wago.io/addons/coordinationcloakutility)\n[GitHub](https://github.com/DonnieDice/CoordinationCloakUtility)",
+                    "inline": true
+                  },
+                  {
+                    "name": "🎮 Compatibility",
+                    "value": "✅ The War Within\n✅ Dragonflight\n✅ Classic Era\n✅ Cataclysm",
+                    "inline": true
+                  },
+                  {
+                    "name": "💬 Support",
+                    "value": "[Report Issues](https://github.com/DonnieDice/CoordinationCloakUtility/issues)\n[Buy Me Coffee](https://www.buymeacoffee.com/donniedice)",
+                    "inline": true
+                  }
+                ],
+                "footer": {
+                  "text": "RGX Mods - RealmGX Community",
+                  "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
+                },
+                "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
+              }]
             }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Send Discord Beta Notification
@@ -71,7 +104,24 @@ jobs:
           curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
-              "content": "**CCU ${{ steps.extract_version.outputs.version }}-beta** is available for testing!\n<https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility>"
+              "username": "CCU Beta",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+              "embeds": [{
+                "title": "🧪 CCU Beta - ${{ steps.extract_version.outputs.version }}",
+                "description": "A beta version of Coordination Cloak Utility is available for testing!",
+                "color": 16744448,
+                "fields": [
+                  {
+                    "name": "📥 Download Beta",
+                    "value": "[CurseForge](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility)\n[GitHub](https://github.com/DonnieDice/CoordinationCloakUtility/releases)"
+                  }
+                ],
+                "footer": {
+                  "text": "RGX Mods - Beta Build",
+                  "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
+                },
+                "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
+              }]
             }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Send Discord Alpha Notification
@@ -80,7 +130,18 @@ jobs:
           curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
-              "content": "**CCU ${{ steps.extract_version.outputs.version }}-alpha** development build available"
+              "username": "CCU Alpha",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+              "embeds": [{
+                "title": "🔬 CCU Alpha - ${{ steps.extract_version.outputs.version }}",
+                "description": "Development build for testing",
+                "color": 16711680,
+                "footer": {
+                  "text": "RGX Mods - Alpha Build",
+                  "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
+                },
+                "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
+              }]
             }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Send Discord Failure Notification
@@ -89,7 +150,31 @@ jobs:
           curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
-              "content": "**CCU build failed!** Check workflow: <https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/${{ github.run_id }}>"
+              "username": "CCU Build Failed",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+              "embeds": [{
+                "title": "❌ CCU Build Failed",
+                "description": "The release workflow encountered an error",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/${{ github.run_id }}",
+                "color": 15158332,
+                "fields": [
+                  {
+                    "name": "Version",
+                    "value": "${{ steps.extract_version.outputs.version || 'Unknown' }}",
+                    "inline": true
+                  },
+                  {
+                    "name": "Workflow",
+                    "value": "[View Logs](https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/${{ github.run_id }})",
+                    "inline": true
+                  }
+                ],
+                "footer": {
+                  "text": "RGX Mods - Build System",
+                  "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
+                },
+                "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
+              }]
             }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Parse Changelog

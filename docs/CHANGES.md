@@ -1,3 +1,8 @@
+## v3.2.4
+- Fixed - Discord notifications now match RGX Mods standard format
+- Added - Rich embeds with thumbnail, inline fields, and RGX Mods branding
+- Updated - Consistent with FFLU, SRLU, and other RGX Mods addons
+
 ## v3.2.3
 - Fixed - Discord notifications now use simple plain text format
 - Updated - Matches exact format used by other DonnieDice addons
