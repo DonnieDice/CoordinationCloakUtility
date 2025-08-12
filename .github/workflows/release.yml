@@ -62,23 +62,7 @@ jobs:
           curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
-              "embeds": [{
-                "title": "🚀 CCU ${{ steps.extract_version.outputs.version }} Release",
-                "color": 16768000,
-                "fields": [
-                  {
-                    "name": "Changelog",
-                    "value": "[View Changes](https://github.com/DonnieDice/CoordinationCloakUtility/blob/main/docs/CHANGES.md)"
-                  },
-                  {
-                    "name": "Downloads",
-                    "value": "[CurseForge](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility) | [GitHub](https://github.com/DonnieDice/CoordinationCloakUtility/releases/latest)"
-                  }
-                ],
-                "footer": {
-                  "text": "DonnieDice Addons Collection"
-                }
-              }]
+              "content": "**CCU ${{ steps.extract_version.outputs.version }}** has been released!\n<https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility>"
             }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Send Discord Beta Notification
@@ -87,23 +71,7 @@ jobs:
           curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
-              "embeds": [{
-                "title": "🧪 CCU ${{ steps.extract_version.outputs.version }} Beta",
-                "color": 16744448,
-                "fields": [
-                  {
-                    "name": "Changelog",
-                    "value": "[View Changes](https://github.com/DonnieDice/CoordinationCloakUtility/blob/main/docs/CHANGES.md)"
-                  },
-                  {
-                    "name": "Downloads",
-                    "value": "[CurseForge Beta](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility/files?filter-status=1) | [GitHub](https://github.com/DonnieDice/CoordinationCloakUtility/releases)"
-                  }
-                ],
-                "footer": {
-                  "text": "DonnieDice Addons Collection"
-                }
-              }]
+              "content": "**CCU ${{ steps.extract_version.outputs.version }}-beta** is available for testing!\n<https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility>"
             }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Send Discord Alpha Notification
@@ -112,23 +80,7 @@ jobs:
           curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
-              "embeds": [{
-                "title": "🔬 CCU ${{ steps.extract_version.outputs.version }} Alpha",
-                "color": 16711680,
-                "fields": [
-                  {
-                    "name": "Changelog",
-                    "value": "[View Changes](https://github.com/DonnieDice/CoordinationCloakUtility/blob/main/docs/CHANGES.md)"
-                  },
-                  {
-                    "name": "Downloads",
-                    "value": "[GitHub](https://github.com/DonnieDice/CoordinationCloakUtility/releases)"
-                  }
-                ],
-                "footer": {
-                  "text": "DonnieDice Addons Collection"
-                }
-              }]
+              "content": "**CCU ${{ steps.extract_version.outputs.version }}-alpha** development build available"
             }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Send Discord Failure Notification
@@ -137,23 +89,7 @@ jobs:
           curl -H "Content-Type: application/json" \
             -X POST \
             -d '{
-              "embeds": [{
-                "title": "❌ CCU Build Failed",
-                "color": 15158332,
-                "fields": [
-                  {
-                    "name": "Version",
-                    "value": "${{ steps.extract_version.outputs.version || 'Unknown' }}"
-                  },
-                  {
-                    "name": "Action",
-                    "value": "[View Workflow](https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/${{ github.run_id }})"
-                  }
-                ],
-                "footer": {
-                  "text": "DonnieDice Addons Collection"
-                }
-              }]
+              "content": "**CCU build failed!** Check workflow: <https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/${{ github.run_id }}>"
             }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
 
       - name: Parse Changelog

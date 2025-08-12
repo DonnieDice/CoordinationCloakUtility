@@ -1,3 +1,7 @@
+## v3.2.3
+- Fixed - Discord notifications now use simple plain text format
+- Updated - Matches exact format used by other DonnieDice addons
+
 ## v3.2.2
 - Fixed - Simplified Discord notifications to match standard DonnieDice addon format
 - Updated - Consistent color scheme and minimal embed structure
