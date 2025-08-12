@@ -1,3 +1,8 @@
+## v3.2.1
+- Fixed - Discord webhook URL now embedded directly in workflow
+- Updated - CLAUDE.md with addon development standards
+- Fixed - Workflow Discord notifications to match other DonnieDice addons
+
 ## v3.2.0
 - Added - Discord webhook notifications for releases
 - Added - GitHub Actions workflow with enhanced release automation
