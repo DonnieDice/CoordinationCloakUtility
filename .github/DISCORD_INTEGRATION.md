@@ -6,12 +6,19 @@ This document consolidates Discord webhook configuration and formatting standard
 
 ## Webhook Configuration
 
-### Primary Discord Webhook
-```
-https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
-```
+**Important**: Each addon has its own unique Discord webhook URL that is embedded directly in the workflow files, NOT stored as a GitHub secret.
 
-**Important**: This webhook URL is embedded directly in workflow files, NOT stored as a GitHub secret.
+### Addon-Specific Discord Webhooks
+
+| Addon | Webhook URL |
+|-------|-------------|
+| **CCU** | `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ` |
+| **FFLU** | *Unique webhook URL for FFLU notifications* |
+| **SRLU** | *Unique webhook URL for SRLU notifications* |
+| **SQP** | *Unique webhook URL for SQP notifications* |
+| **BLU Classic** | *Unique webhook URL for BLU Classic notifications* |
+
+Each webhook posts to a specific channel or with specific formatting for that addon.
 
 ## Standard Notification Format
 
@@ -77,29 +84,39 @@ All RGX Mods addons use the following Discord embed format:
 ## Addon-Specific Configurations
 
 ### CCU (Coordination Cloak Utility)
+- **Webhook**: `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ`
 - **Icon**: `https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png`
 - **Tagline**: "Teleport with ease!"
 - **Color**: `9830721` (Teal)
+- **CurseForge**: `https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility`
 
 ### FFLU (Final Fantasy Level-Up!)
+- **Webhook**: *[Insert FFLU webhook URL here]*
 - **Icon**: `https://raw.githubusercontent.com/donniedice/FFLU/main/images/icon.png`
 - **Tagline**: "Level up in style!"
 - **Color**: `16768000` (Gold)
+- **CurseForge**: `https://www.curseforge.com/wow/addons/fflu`
 
 ### SRLU (Skyrim Level-Up!)
+- **Webhook**: *[Insert SRLU webhook URL here]*
 - **Icon**: `https://raw.githubusercontent.com/donniedice/SRLU/main/images/SRLU_logo_400x400.png`
 - **Tagline**: "Fus Ro DAH!"
 - **Color**: `9132843` (Purple/Blue)
+- **CurseForge**: `https://www.curseforge.com/wow/addons/srlu`
 
 ### SQP (Simple Quest Plates)
+- **Webhook**: *[Insert SQP webhook URL here]*
 - **Icon**: `https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/icon.png`
 - **Tagline**: "Quest tracking made simple!"
 - **Color**: Standard RGX colors
+- **CurseForge**: `https://www.curseforge.com/wow/addons/simple-quest-plates`
 
 ### BLU Classic
+- **Webhook**: *[Insert BLU Classic webhook URL here]*
 - **Icon**: Repository-specific icon
 - **Tagline**: "Classic experience enhanced!"
 - **Color**: Standard RGX colors
+- **CurseForge**: `https://www.curseforge.com/wow/addons/blu-classic`
 
 ## Platform Links
 
@@ -138,8 +155,10 @@ These are stored as GitHub Secrets (Settings → Secrets and variables → Actio
     curl -H "Content-Type: application/json" \
       -X POST \
       -d '{...embed json...}' \
-      https://discord.com/api/webhooks/[WEBHOOK_URL]
+      https://discord.com/api/webhooks/[ADDON_SPECIFIC_WEBHOOK_URL]
 ```
+
+**Note**: Each addon must use its own webhook URL - do not share webhook URLs between addons.
 
 ## Testing Discord Notifications
 
