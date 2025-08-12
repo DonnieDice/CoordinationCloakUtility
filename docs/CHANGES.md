@@ -1,3 +1,7 @@
+## v3.2.2
+- Fixed - Simplified Discord notifications to match standard DonnieDice addon format
+- Updated - Consistent color scheme and minimal embed structure
+
 ## v3.2.1
 - Fixed - Discord webhook URL now embedded directly in workflow
 - Updated - CLAUDE.md with addon development standards
