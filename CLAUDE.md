@@ -6,6 +6,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Coordination Cloak Utility is a World of Warcraft addon that automates teleportation cloak swapping. The addon detects teleportation cloaks in inventory, handles equipping/re-equipping, and provides a UI button for one-click teleportation.
 
+## Important API Keys and Webhooks
+
+**IMPORTANT**: These are embedded directly in the workflow files, NOT as GitHub secrets:
+
+- **Discord Webhook**: `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ`
+- **CurseForge API Key**: `04a7e7a6-6497-41d9-b6cc-88381a63d2a9` (use as secret: CF_API_KEY)
+- **WoWInterface Token**: `8a5f86a9e264e5c7d7d16de82217ac37d6aa185bd4c622199ebf05fc4f5732a6` (use as secret: WOWI_API_TOKEN)
+- **Wago.io Token**: `NKK3BKHeIlxVQqTjFByTwohzHSL4nGH66o2Dvriu` (use as secret: WAGO_API_TOKEN)
+
 ## Core Architecture
 
 ### Main Components
@@ -41,6 +50,19 @@ Coordination Cloak Utility is a World of Warcraft addon that automates teleporta
 3. Commit with descriptive message
 4. Tag release: `git tag vX.X.X`
 5. Push to GitHub: `git push origin main --tags`
+6. GitHub Actions will automatically:
+   - Package the addon
+   - Upload to CurseForge (project ID: 1086635)
+   - Create GitHub release
+   - Send Discord notifications
+
+## GitHub Actions Workflow
+
+The `.github/workflows/release.yml` handles automated releases:
+- Triggers on version tags (v*)
+- Uses BigWigsMods/packager for WoW addon packaging
+- Sends Discord notifications for release/beta/alpha builds
+- Discord webhook is embedded directly in workflow (NOT as a secret)
 
 ## WoW Addon Constraints
 
@@ -77,3 +99,19 @@ Item IDs defined in `CCU.cloaks`:
 - 65274, 65360, 65361 - Cloak of Coordination variants
 - 63206, 63207 - Wrap of Unity variants  
 - 63352, 63353 - Shroud of Cooperation variants
+
+## Addon Development Standards
+
+This addon follows the same development patterns as other DonnieDice addons (SRLU, FFLU, SQP, BLU Classic):
+
+1. **Discord Notifications**: Webhook URLs are embedded directly in workflow files, not as secrets
+2. **Release Automation**: Use BigWigsMods/packager for packaging
+3. **Version Format**: Use `vX.X.X` format for tags (e.g., v3.2.0)
+4. **Changelog**: Maintain docs/CHANGES.md with version history
+5. **TOC Updates**: Always update `## Version:` in .toc file before releasing
+
+## Repository Links
+
+- **GitHub**: https://github.com/DonnieDice/CoordinationCloakUtility
+- **CurseForge**: https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility
+- **Author**: DonnieDice (donniedice@protonmail.com)
