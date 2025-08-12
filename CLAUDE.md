@@ -6,14 +6,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Coordination Cloak Utility is a World of Warcraft addon that automates teleportation cloak swapping. The addon detects teleportation cloaks in inventory, handles equipping/re-equipping, and provides a UI button for one-click teleportation.
 
-## Important API Keys and Webhooks
+## Discord Integration & API Configuration
 
-**IMPORTANT**: These are embedded directly in the workflow files, NOT as GitHub secrets:
+For complete Discord webhook configuration, notification formats, and API key management, see:
+**`.github/DISCORD_INTEGRATION.md`**
 
-- **Discord Webhook**: `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ`
-- **CurseForge API Key**: `04a7e7a6-6497-41d9-b6cc-88381a63d2a9` (use as secret: CF_API_KEY)
-- **WoWInterface Token**: `8a5f86a9e264e5c7d7d16de82217ac37d6aa185bd4c622199ebf05fc4f5732a6` (use as secret: WOWI_API_TOKEN)
-- **Wago.io Token**: `NKK3BKHeIlxVQqTjFByTwohzHSL4nGH66o2Dvriu` (use as secret: WAGO_API_TOKEN)
+Key points:
+- Discord webhook URL is embedded directly in workflow files (not as a secret)
+- All addons follow RGX Mods Discord notification standards
+- API keys (CurseForge, WoWInterface, Wago) are stored as GitHub Secrets
 
 ## Core Architecture
 
