@@ -1,3 +1,9 @@
+## v3.2.5
+- Added - Consolidated Discord integration documentation in DISCORD_INTEGRATION.md
+- Removed - SECRETS.md (consolidated into Discord integration doc)
+- Updated - CLAUDE.md to reference new Discord documentation
+- Testing - Final test of RGX Mods Discord notification format
+
 ## v3.2.4
 - Fixed - Discord notifications now match RGX Mods standard format
 - Added - Rich embeds with thumbnail, inline fields, and RGX Mods branding
