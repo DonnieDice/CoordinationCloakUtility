@@ -10,16 +10,17 @@ This document consolidates Discord webhook configuration and formatting standard
 
 ### Addon-Specific Discord Webhooks
 
-| Addon | Webhook Configuration | Discord Server |
-|-------|----------------------|----------------|
-| **CCU** | `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ` | Main RGX |
-| **FFLU** | `${{ secrets.DISCORD_WEBHOOK }}` | discord.gg/N7kdKAHVVF |
-| **SRLU** | `${{ secrets.DISCORD_WEBHOOK }}` | discord.gg/hK9N3esnce |
-| **SQP** | `${{ secrets.DISCORD_WEBHOOK }}` | discord.gg/N7kdKAHVVF |
-| **BLU Classic** | `${{ secrets.DISCORD_WEBHOOK }}` | discord.gg/N7kdKAHVVF |
-| **RND** | `${{ secrets.DISCORD_WEBHOOK }}` | discord.gg/hK9N3esnce |
+| Addon | Webhook URL | Location Found |
+|-------|-------------|----------------|
+| **CCU** | `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ` | .github/workflows/release.yml |
+| **BLU Classic** | `https://discord.com/api/webhooks/1404619741997563965/W99EcO9tGg1b9hz7rHYyHRJfsL1oeN1vOt0MMMOlsra5oGUDzbviiyILbKwnpxCvYZyJ` | .env file |
+| **SRLU** | `https://discord.com/api/webhooks/1402510054506369154/4JFpuLjAej8RVI9VfiwdfJvR6wLptJsTiJ0UZ2ePGyZ7lDh0AOcVHTfuxZoC0e2JukJ8` | .github/workflows/README.md |
+| **FFLU** | Uses `${{ secrets.DISCORD_WEBHOOK }}` - webhook not found in files | GitHub Secret |
+| **SQP** | Uses `${{ secrets.DISCORD_WEBHOOK }}` - webhook not found in files | GitHub Secret |
+| **BLU** | Uses `${{ secrets.DISCORD_WEBHOOK }}` - webhook not found in files | GitHub Secret |
+| **RND** | Uses `${{ secrets.DISCORD_WEBHOOK }}` - webhook not found in files | GitHub Secret |
 
-**Note**: CCU currently has the webhook hardcoded in the workflow. All other addons properly use GitHub Secrets for webhook management.
+**Note**: Some addons have webhooks hardcoded in their repos, while others properly use GitHub Secrets. Consider moving all webhooks to GitHub Secrets for better security.
 
 ## Standard Notification Format
 
@@ -85,24 +86,24 @@ All RGX Mods addons use the following Discord embed format:
 ## Addon-Specific Configurations
 
 ### CCU (Coordination Cloak Utility)
-- **Webhook**: Hardcoded in workflow (see above)
+- **Webhook**: Hardcoded in workflow - see table above
 - **Icon**: `https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png`
 - **Tagline**: "Teleport with ease!"
 - **Color**: `9830721` (Teal)
 - **Emoji**: 🎉 (release), 🧪 (beta), 🔬 (alpha)
 - **CurseForge**: `https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility`
 
-### FFLU (Final Fantasy Level-Up!)
-- **Webhook**: Uses `${{ secrets.DISCORD_WEBHOOK }}`
-- **Icon**: `https://raw.githubusercontent.com/donniedice/FFLU/main/images/fflu_logo.png`
-- **Tagline**: "Experience the victory fanfare!"
-- **Color**: `16766720` (Gold/Yellow)
-- **Emoji**: 🎵 (music note theme)
-- **CurseForge**: `https://www.curseforge.com/wow/addons/fflu`
+### BLU Classic (Better Level-Up! Classic)
+- **Webhook**: Found in .env file - see table above
+- **Icon**: `https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png`
+- **Tagline**: "Level up in style - Classic Edition!"
+- **Color**: `5814783` (Blue)
+- **Emoji**: 🎮 (release), 🧪 (beta), 🔬 (alpha)
+- **CurseForge**: `https://www.curseforge.com/wow/addons/blu-classic`
 - **Discord**: discord.gg/N7kdKAHVVF
 
 ### SRLU (Skyrim Level-Up!)
-- **Webhook**: Uses `${{ secrets.DISCORD_WEBHOOK }}`
+- **Webhook**: Found in README.md - see table above
 - **Icon**: `https://raw.githubusercontent.com/donniedice/SRLU/main/images/SRLU_logo_400x400.png`
 - **Tagline**: "Fus Ro DAH!"
 - **Title Format**: "🗡️ SRLU | Skyrim Level-Up!"
@@ -110,22 +111,22 @@ All RGX Mods addons use the following Discord embed format:
 - **CurseForge**: `https://www.curseforge.com/wow/addons/srlu`
 - **Discord**: discord.gg/hK9N3esnce
 
+### FFLU (Final Fantasy Level-Up!)
+- **Webhook**: Uses GitHub Secret (not found in files)
+- **Icon**: `https://raw.githubusercontent.com/donniedice/FFLU/main/images/fflu_logo.png`
+- **Tagline**: "Experience the victory fanfare!"
+- **Color**: `16766720` (Gold/Yellow)
+- **Emoji**: 🎵 (music note theme)
+- **CurseForge**: `https://www.curseforge.com/wow/addons/fflu`
+- **Discord**: discord.gg/N7kdKAHVVF
+
 ### SQP (Simple Quest Plates)
-- **Webhook**: Uses `${{ secrets.DISCORD_WEBHOOK }}`
+- **Webhook**: Uses GitHub Secret (not found in files)
 - **Icon**: `https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/icon.png`
 - **Tagline**: "Clean. Simple. Effective."
 - **Title Format**: "🎯 SimpleQuestPlates"
 - **Color**: `5168588` (Teal)
 - **CurseForge**: `https://www.curseforge.com/wow/addons/simple-quest-plates`
-- **Discord**: discord.gg/N7kdKAHVVF
-
-### BLU Classic (Better Level-Up! Classic)
-- **Webhook**: Uses `${{ secrets.DISCORD_WEBHOOK }}`
-- **Icon**: `https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png`
-- **Tagline**: "Level up in style - Classic Edition!"
-- **Color**: `5814783` (Blue)
-- **Emoji**: 🎮 (release), 🧪 (beta), 🔬 (alpha)
-- **CurseForge**: `https://www.curseforge.com/wow/addons/blu-classic`
 - **Discord**: discord.gg/N7kdKAHVVF
 
 ### RND (Remove Nameplate Debuffs)
