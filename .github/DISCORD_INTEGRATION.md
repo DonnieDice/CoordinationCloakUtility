@@ -10,20 +10,17 @@ This document consolidates Discord webhook configuration and formatting standard
 
 ### Addon-Specific Discord Webhooks
 
-| Addon | Webhook URL | Status |
-|-------|-------------|--------|
-| **CCU** | `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ` | ✅ Found in workflow |
-| **BLU Classic** | `https://discord.com/api/webhooks/1404619741997563965/W99EcO9tGg1b9hz7rHYyHRJfsL1oeN1vOt0MMMOlsra5oGUDzbviiyILbKwnpxCvYZyJ` | ✅ Found in .env |
-| **SRLU** | `https://discord.com/api/webhooks/1402510054506369154/4JFpuLjAej8RVI9VfiwdfJvR6wLptJsTiJ0UZ2ePGyZ7lDh0AOcVHTfuxZoC0e2JukJ8` | ✅ Found in docs |
-| **FFLU** | *Need to retrieve from Discord* | ❌ Using GitHub Secret |
-| **SQP** | *Need to retrieve from Discord* | ❌ Using GitHub Secret |
-| **BLU** | *Need to retrieve from Discord* | ❌ Using GitHub Secret |
-| **RND** | *Need to retrieve from Discord* | ❌ Using GitHub Secret |
+| Addon | Webhook URL |
+|-------|-------------|
+| **CCU** | `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ` |
+| **BLU Classic** | `https://discord.com/api/webhooks/1404619741997563965/W99EcO9tGg1b9hz7rHYyHRJfsL1oeN1vOt0MMMOlsra5oGUDzbviiyILbKwnpxCvYZyJ` |
+| **FFLU** | `https://discord.com/api/webhooks/1402501158261755976/prWkSACTwtSN0eUBic99n1iM5rPwh0NS8ab7R6piVZA5JIe6TnyGY4CbiapmLRZ9Vith` |
+| **SRLU** | `https://discord.com/api/webhooks/1402510054506369154/4JFpuLjAej8RVI9VfiwdfJvR6wLptJsTiJ0UZ2ePGyZ7lDh0AOcVHTfuxZoC0e2JukJ8` |
+| **SQP** | `https://discord.com/api/webhooks/1402269251490025493/gx0vDfZpxxT2pEQBq60j_Wr6kJcJ774dwm0zUSOX_orQw4iuNNOm-ElsVkeEUMumL0Qh` |
+| **RND** | `https://discord.com/api/webhooks/1402549170052530198/REtEguMv1kOfde0hqmOTfgmNpUtmZlFEwzefJgyx1viQCOfVfmleTWrwKSQrne7mzJz2` |
+| **BLU** | *Not provided - check Discord server* |
 
-**Action Required**: 
-1. Retrieve missing webhook URLs from Discord server webhook settings
-2. Add them to this documentation for local reference
-3. Consider whether to hardcode them in workflows or keep as secrets
+**Note**: All webhook URLs are now documented for local reference. These should be embedded directly in workflow files for consistency across all addons.
 
 ## Standard Notification Format
 
