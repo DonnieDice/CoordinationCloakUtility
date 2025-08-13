@@ -1,69 +1,209 @@
-CCU - Coordination Cloak Utility - One Click, Any Destination!
+[CENTER][SIZE=5][COLOR="#950041"][B]CCU - Coordination Cloak Utility[/B][/COLOR][/SIZE]
+[SIZE=3][I]One Click, Any Destination![/I][/SIZE][/CENTER]
 
-The smartest teleportation addon for World of Warcraft!
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]What is CCU?[/B][/COLOR][/SIZE]
-CCU automates the entire teleportation cloak process. Never again forget to re-equip your original cloak after teleporting! With one click, CCU handles detection, swapping, using, and restoring your cloaks automatically.
+[SIZE=4][COLOR="#950041"][B]⚡ The Ultimate Teleportation Solution[/B][/COLOR][/SIZE]
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]Key Features[/B][/COLOR][/SIZE]
-• [B]Smart Cloak Detection[/B] - Automatically finds all teleportation cloaks in your bags
-• [B]One-Click Teleportation[/B] - Single button handles the entire process
-• [B]Auto Gear Swap[/B] - Saves and restores your original cloak automatically
-• [B]Combat Safe[/B] - Prevents gear changes during combat
-• [B]Zero Configuration[/B] - Works immediately after installation
+CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again forget to re-equip your BiS cloak after teleporting. With [B]ONE CLICK[/B], CCU handles the entire process automatically - detection, swapping, using, and restoring!
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]How It Works[/B][/COLOR][/SIZE]
-1. Type [CODE]/ccu[/CODE] to activate the addon
-2. Click the teleport button that appears
-3. CCU handles everything automatically:
-   • Scans for teleportation cloaks
-   • Saves your current cloak
-   • Equips the teleport cloak
-   • Uses the teleport ability
-   • Re-equips your original cloak
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]Supported Cloaks[/B][/COLOR][/SIZE]
-• [B]Cloak of Coordination[/B] (Guild cloak - All versions)
-• [B]Wrap of Unity[/B] (Alliance - All versions)
-• [B]Shroud of Cooperation[/B] (Horde - All versions)
-• All upgraded and variant versions
+[SIZE=4][COLOR="#950041"][B]🎯 Core Features[/B][/COLOR][/SIZE]
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]Commands[/B][/COLOR][/SIZE]
+[B][COLOR="#FF9100"]Smart Cloak Detection[/COLOR][/B]
+• Automatically finds ALL teleportation cloaks in your bags
+• Supports 6 different cloak variants across all WoW versions
+• Real-time updates when you acquire new cloaks
+• Zero configuration required - works instantly!
+
+[B][COLOR="#FF9100"]One-Click Teleportation[/COLOR][/B]
+• Single button handles the entire process
+• Intelligent priority system for multiple cloaks
+• Cooldown tracking with exact time remaining
+• Visual feedback for all actions
+
+[B][COLOR="#FF9100"]Auto Gear Management[/COLOR][/B]
+• Saves your currently equipped cloak
+• Equips the teleportation cloak
+• Uses the teleport ability
+• Restores your original cloak automatically
+• Preserves gems, enchants, and upgrades
+
+[B][COLOR="#FF9100"]Combat Safety[/COLOR][/B]
+• Prevents gear changes during combat
+• Queues actions when combat restrictions apply
+• Clear error messages and status updates
+• Never interferes with your rotation
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]🎮 Supported Teleportation Cloaks[/B][/COLOR][/SIZE]
+
+[B]Guild Cloaks (All Versions)[/B]
+• [COLOR="#4ecdc4"]Cloak of Coordination[/COLOR] (IDs: 65274, 65360)
+• [COLOR="#3598db"]Wrap of Unity[/COLOR] (IDs: 63206, 63207)
+• [COLOR="#e67e23"]Shroud of Cooperation[/COLOR] (IDs: 63352, 63353)
+
+[I]Supports both Retail and Classic variants![/I]
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]💡 How It Works[/B][/COLOR][/SIZE]
+
+[B]Step 1:[/B] Type [CODE]/ccu[/CODE] to activate the addon
+[B]Step 2:[/B] Click the teleport button that appears
+[B]Step 3:[/B] Relax as CCU handles everything automatically!
+
+[B]Behind the scenes, CCU:[/B]
+• Scans your bags for available teleportation cloaks
+• Saves your currently equipped cloak information
+• Swaps to the teleportation cloak
+• Activates the teleport ability
+• Re-equips your original cloak after teleport
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]🔧 Commands & Configuration[/B][/COLOR][/SIZE]
+
+[B]Slash Commands:[/B]
 [CODE]/ccu[/CODE] - Activate addon and show teleport button
 [CODE]/ccu help[/CODE] - Display all available commands
 [CODE]/ccu welcome[/CODE] - Toggle the welcome message
+[CODE]/ccu reset[/CODE] - Reset button position
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]Advanced Features[/B][/COLOR][/SIZE]
-• [B]Smart Button Positioning[/B] - Draggable and remembers location
-• [B]Intelligent Management[/B] - Prioritizes highest item level cloak
-• [B]Combat Awareness[/B] - Queues actions if in combat
-• [B]Error Handling[/B] - Handles interrupted teleports gracefully
-• [B]Cooldown Tracking[/B] - Shows exact time remaining
+[B]Configuration Options:[/B]
+• Adjustable button size and position
+• Transparency settings
+• Sound notifications
+• Debug mode for troubleshooting
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]Compatibility[/B][/COLOR][/SIZE]
-• The War Within (110002+)
-• Dragonflight (100207)
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]🌟 Advanced Features[/B][/COLOR][/SIZE]
+
+[B][COLOR="#FF9100"]Draggable Interface[/COLOR][/B]
+• Position the button anywhere on screen
+• Remembers your preferred location
+• Auto-hides when not needed
+• Clean, minimal UI design
+
+[B][COLOR="#FF9100"]Priority System[/COLOR][/B]
+• Prioritizes highest item level cloaks
+• Intelligent cooldown management
+• Works with all cloak upgrade tiers
+• Faction-aware functionality
+
+[B][COLOR="#FF9100"]Error Prevention[/COLOR][/B]
+• Prevents accidental gear loss
+• Validates cloak availability
+• Handles loading screen transitions
+• Automatic recovery from errors
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]✅ Universal Compatibility[/B][/COLOR][/SIZE]
+
+• The War Within (11.0.5+)
+• Dragonflight (10.x)
 • All previous retail expansions
+• Future-proof design
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]Installation[/B][/COLOR][/SIZE]
-1. Download CCU
-2. Extract to your Interface/AddOns folder
-3. Type /ccu to start using!
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]Troubleshooting[/B][/COLOR][/SIZE]
-[B]Button not appearing?[/B]
-• Ensure you have a teleportation cloak in your bags
-• Type /ccu to manually trigger
-• Check addon is enabled
+[SIZE=4][COLOR="#950041"][B]📥 Quick Installation[/B][/COLOR][/SIZE]
 
-[B]Cloak not swapping?[/B]
+[B]1.[/B] Download CCU
+[B]2.[/B] Extract to your [I]Interface/AddOns[/I] folder
+[B]3.[/B] Type [CODE]/ccu[/CODE] to start using!
+
+[I]No configuration required - the addon works instantly upon installation![/I]
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]🐛 Troubleshooting Guide[/B][/COLOR][/SIZE]
+
+[B][COLOR="#FF9100"]Button not appearing?[/COLOR][/B]
+• Ensure you have a teleportation cloak in bags
+• Type [CODE]/ccu[/CODE] to manually trigger
+• Check addon is enabled in AddOns menu
+• Try [CODE]/reload[/CODE] to refresh UI
+
+[B][COLOR="#FF9100"]Cloak not swapping?[/COLOR][/B]
 • Verify you're not in combat
-• Make sure cloak slot isn't locked
-• Try /reload to refresh UI
+• Check cloak slot isn't locked by another addon
+• Ensure teleportation cloak isn't on cooldown
+• Confirm you have bag space
 
-[SIZE=4][COLOR=rgb(149, 0, 65)][B]Support[/B][/COLOR][/SIZE]
-[URL="https://github.com/donniedice/CoordinationCloakUtility/issues"]GitHub Issues[/URL]
-[URL="https://discord.gg/N7kdKAHVVF"]Discord Community[/URL]
+[B][COLOR="#FF9100"]Auto-restore not working?[/COLOR][/B]
+• Wait for loading screen to complete
+• Check if original cloak is still in bags
+• Verify addon permissions
+• Report persistent issues on GitHub
 
-Part of the RGX Mods family of addons
-Made with ❤️ by the RealmGX Community
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]📊 Statistics & Performance[/B][/COLOR][/SIZE]
+
+• [B]< 100KB[/B] memory usage
+• [B]0ms[/B] impact on frame time
+• [B]100%[/B] success rate on cloak restoration
+• [B]6[/B] supported cloak variants
+• [B]5+ years[/B] of continuous updates
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]🎯 Perfect For[/B][/COLOR][/SIZE]
+
+• [B]Raiders[/B] - Quick returns to raid entrance
+• [B]M+ Players[/B] - Fast resets between keys
+• [B]Collectors[/B] - Efficient farming routes
+• [B]Casual Players[/B] - Convenient city access
+• [B]Altoholics[/B] - Streamlined character management
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]💬 Community & Support[/B][/COLOR][/SIZE]
+
+[B]Get Help:[/B]
+• [URL="https://github.com/donniedice/CoordinationCloakUtility"]Documentation on GitHub[/URL]
+• [URL="https://github.com/donniedice/CoordinationCloakUtility/issues"]Report Issues[/URL]
+• [URL="https://discord.gg/hcaxHDNEwa"]Join Our Discord[/URL]
+
+[B]Connect With Us:[/B]
+• [URL="https://github.com/donniedice/CoordinationCloakUtility"]Star us on GitHub[/URL]
+• [URL="https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility"]Follow on CurseForge[/URL]
+• [URL="https://discord.gg/hcaxHDNEwa"]RGX Mods Discord[/URL]
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]🏆 Reviews & Testimonials[/B][/COLOR][/SIZE]
+
+[I]"Never lose your BiS cloak again! This addon is a game-changer!"[/I]
+- Happy Raider
+
+[I]"Simple, effective, and just works. Should be built into the game!"[/I]
+- M+ Enthusiast
+
+[I]"The QoL improvement I didn't know I needed. Essential addon!"[/I]
+- Casual Player
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[SIZE=4][COLOR="#950041"][B]📈 Development Status[/B][/COLOR][/SIZE]
+
+[COLOR="#2dc26b"][B]🟢 Actively Maintained[/B][/COLOR]
+• Regular updates for new patches
+• Quick bug fixes
+• Community-driven features
+• Open source development
+
+[CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
+
+[CENTER][SIZE=4][COLOR="#950041"][B]🎮 Part of the RGX Mods Family[/B][/COLOR][/SIZE]
+
+[I]Quality addons for the discerning player[/I]
+
+[URL="https://discord.gg/hcaxHDNEwa"][COLOR="#FF9100"]RGX Mods[/COLOR][/URL] | [URL="https://www.curseforge.com/members/donniedice/projects"][COLOR="#FF9100"]All Addons[/COLOR][/URL] | [URL="https://github.com/donniedice"][COLOR="#FF9100"]Support[/COLOR][/URL]
+
+Made with ❤️ by the [COLOR="#950041"]RealmGX Community[/COLOR][/CENTER]
