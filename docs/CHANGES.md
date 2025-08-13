@@ -1,3 +1,9 @@
+## v3.2.8
+- Added - Changelog content now included in Discord notifications
+- Fixed - Proper changelog extraction and escaping for JSON payload
+- Updated - All release types (release, beta, alpha) now include changelog
+- Matches - Discord format now identical to other RGX Mods addons
+
 ## v3.2.7
 - Fixed - Discord webhook JSON escaping in release workflow
 - Fixed - Removed problematic changelog variable from Discord payload
