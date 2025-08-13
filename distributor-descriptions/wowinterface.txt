@@ -1,0 +1,69 @@
+CCU - Coordination Cloak Utility - One Click, Any Destination!
+
+The smartest teleportation addon for World of Warcraft!
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]What is CCU?[/B][/COLOR][/SIZE]
+CCU automates the entire teleportation cloak process. Never again forget to re-equip your original cloak after teleporting! With one click, CCU handles detection, swapping, using, and restoring your cloaks automatically.
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]Key Features[/B][/COLOR][/SIZE]
+• [B]Smart Cloak Detection[/B] - Automatically finds all teleportation cloaks in your bags
+• [B]One-Click Teleportation[/B] - Single button handles the entire process
+• [B]Auto Gear Swap[/B] - Saves and restores your original cloak automatically
+• [B]Combat Safe[/B] - Prevents gear changes during combat
+• [B]Zero Configuration[/B] - Works immediately after installation
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]How It Works[/B][/COLOR][/SIZE]
+1. Type [CODE]/ccu[/CODE] to activate the addon
+2. Click the teleport button that appears
+3. CCU handles everything automatically:
+   • Scans for teleportation cloaks
+   • Saves your current cloak
+   • Equips the teleport cloak
+   • Uses the teleport ability
+   • Re-equips your original cloak
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]Supported Cloaks[/B][/COLOR][/SIZE]
+• [B]Cloak of Coordination[/B] (Guild cloak - All versions)
+• [B]Wrap of Unity[/B] (Alliance - All versions)
+• [B]Shroud of Cooperation[/B] (Horde - All versions)
+• All upgraded and variant versions
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]Commands[/B][/COLOR][/SIZE]
+[CODE]/ccu[/CODE] - Activate addon and show teleport button
+[CODE]/ccu help[/CODE] - Display all available commands
+[CODE]/ccu welcome[/CODE] - Toggle the welcome message
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]Advanced Features[/B][/COLOR][/SIZE]
+• [B]Smart Button Positioning[/B] - Draggable and remembers location
+• [B]Intelligent Management[/B] - Prioritizes highest item level cloak
+• [B]Combat Awareness[/B] - Queues actions if in combat
+• [B]Error Handling[/B] - Handles interrupted teleports gracefully
+• [B]Cooldown Tracking[/B] - Shows exact time remaining
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]Compatibility[/B][/COLOR][/SIZE]
+• The War Within (110002+)
+• Dragonflight (100207)
+• All previous retail expansions
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]Installation[/B][/COLOR][/SIZE]
+1. Download CCU
+2. Extract to your Interface/AddOns folder
+3. Type /ccu to start using!
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]Troubleshooting[/B][/COLOR][/SIZE]
+[B]Button not appearing?[/B]
+• Ensure you have a teleportation cloak in your bags
+• Type /ccu to manually trigger
+• Check addon is enabled
+
+[B]Cloak not swapping?[/B]
+• Verify you're not in combat
+• Make sure cloak slot isn't locked
+• Try /reload to refresh UI
+
+[SIZE=4][COLOR=rgb(147, 112, 219)][B]Support[/B][/COLOR][/SIZE]
+[URL="https://github.com/donniedice/CoordinationCloakUtility/issues"]GitHub Issues[/URL]
+[URL="https://discord.gg/N7kdKAHVVF"]Discord Community[/URL]
+
+Part of the RGX Mods family of addons
+Made with ❤️ by the RealmGX Community

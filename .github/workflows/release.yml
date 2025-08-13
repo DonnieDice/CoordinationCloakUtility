@@ -74,14 +74,14 @@ jobs:
             -X POST \
             -d "{
               \"username\": \"CCU Update\",
-              \"avatar_url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png\",
+              \"avatar_url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png\",
               \"embeds\": [{
                 \"title\": \"🎉 CCU | Coordination Cloak Utility - ${{ steps.extract_version.outputs.version }}\",
                 \"description\": \"**Teleport with ease!** A new version of CCU has been released!\\n\\n🎵 **What's New:**\\n${{ steps.extract_changelog.outputs.changelog }}\",
                 \"url\": \"https://github.com/DonnieDice/CoordinationCloakUtility/releases/tag/${{ github.ref_name }}\",
                 \"color\": 9830721,
                 \"thumbnail\": {
-                  \"url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png\"
+                  \"url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png\"
                 },
                 \"fields\": [
                   {
@@ -115,7 +115,7 @@ jobs:
             -X POST \
             -d "{
               \"username\": \"CCU Beta\",
-              \"avatar_url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png\",
+              \"avatar_url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png\",
               \"embeds\": [{
                 \"title\": \"🧪 CCU Beta - ${{ steps.extract_version.outputs.version }}\",
                 \"description\": \"A beta version of Coordination Cloak Utility is available for testing!\\n\\n**What's New:**\\n${{ steps.extract_changelog.outputs.changelog }}\",
@@ -141,7 +141,7 @@ jobs:
             -X POST \
             -d "{
               \"username\": \"CCU Alpha\",
-              \"avatar_url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png\",
+              \"avatar_url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png\",
               \"embeds\": [{
                 \"title\": \"🔬 CCU Alpha - ${{ steps.extract_version.outputs.version }}\",
                 \"description\": \"Development build for testing\\n\\n**What's New:**\\n${{ steps.extract_changelog.outputs.changelog }}\",

@@ -1,3 +1,12 @@
+## v3.3.0
+- Added - RGX Mods brand-compliant README with proper badges and formatting
+- Added - Complete distributor descriptions for all platforms (CurseForge, Wago, WoWInterface)
+- Added - CCU logo display in README header
+- Fixed - Discord webhook to use proper ccu_logo.png instead of missing icon.png
+- Fixed - Removed incorrect Guild Page (65361) from teleportation cloak list
+- Updated - README with comprehensive features, troubleshooting, and support sections
+- Enhanced - Brand consistency across all documentation
+
 ## v3.2.9
 - Updated - Discord messages now show only current version changelog
 - Fixed - Changelog extraction to display only most recent version notes

@@ -39,7 +39,7 @@ CCU.reEquipMaxRetries = 3    -- Maximum number of re-equip retries
 CCU.currentCloakID = nil -- Current equipped cloak ID
 CCU.lastNonTeleportationCloakID = nil -- Last non-teleportation cloak ID
 
-CCU.cloaks = {65274, 65360, 65361, 63206, 63207, 63352, 63353} -- Teleportation cloak item IDs
+CCU.cloaks = {65274, 65360, 63206, 63207, 63352, 63353} -- Teleportation cloak item IDs
 CCU.usableCloaks = {} -- Table to store usable cloaks
 
 -- Color codes

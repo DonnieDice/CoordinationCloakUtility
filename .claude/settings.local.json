@@ -29,7 +29,15 @@
       "Bash(then find \"$repo\" -name \"*.env*\" -o -name \"config.*\" -o -name \"*.config\")",
       "Bash(do if [ -d \"$dir/.github/workflows\" ])",
       "Bash(then echo \"=== Checking $dir ===\")",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(do sed -i 's/## Version: 3.0.2/## Version: 3.1.0/' \"$file\")",
+      "Bash(do sed -i 's/## Version: 3.0.0/## Version: 3.1.0/' \"$file\")",
+      "WebFetch(domain:www.wowhead.com)",
+      "Bash(xcopy:*)",
+      "Bash(robocopy:*)",
+      "Bash(powershell:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,9 @@
+Never forget to swap your teleportation cloak again! CCU automates the entire process - equip, teleport, and re-equip your original cloak with just one click.
+
+• Smart detection of all teleportation cloaks
+• One-click teleportation with automatic gear swapping
+• Saves and restores your original cloak
+• Combat-safe with clear status notifications
+• Works with all guild and faction teleport cloaks
+
+Join our Discord for support: discord.gg/N7kdKAHVVF
