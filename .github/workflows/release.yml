@@ -55,7 +55,8 @@ jobs:
         id: extract_changelog
         run: |
           if [ -f "docs/CHANGES.md" ]; then
-            CHANGELOG=$(cat docs/CHANGES.md | head -20 | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+            # Extract only the most recent version's changelog (everything between first ## and second ##)
+            CHANGELOG=$(awk '/^## v[0-9]/{if(NR>1)exit;next} NR>1' docs/CHANGES.md | sed '/^$/d' | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
             echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
           else
             echo "changelog=No changelog available" >> $GITHUB_OUTPUT

@@ -1,3 +1,8 @@
+## v3.2.9
+- Updated - Discord messages now show only current version changelog
+- Fixed - Changelog extraction to display only most recent version notes
+- Improved - Cleaner Discord notifications without full history
+
 ## v3.2.8
 - Added - Changelog content now included in Discord notifications
 - Fixed - Proper changelog extraction and escaping for JSON payload
