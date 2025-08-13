@@ -1,3 +1,9 @@
+## v3.2.7
+- Fixed - Discord webhook JSON escaping in release workflow
+- Fixed - Removed problematic changelog variable from Discord payload
+- Updated - Simplified Discord message to prevent JSON parsing errors
+- Testing - Release with properly formatted Discord notifications
+
 ## v3.2.6
 - Fixed - Complete Discord webhook documentation with found URLs
 - Updated - Discord notification format to match RGX Mods standard
