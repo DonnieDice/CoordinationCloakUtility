@@ -3,13 +3,13 @@
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]⚡ The Ultimate Teleportation Solution[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]>> The Ultimate Teleportation Solution[/B][/COLOR][/SIZE]
 
 CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again forget to re-equip your BiS cloak after teleporting. With [B]ONE CLICK[/B], CCU handles the entire process automatically - detection, swapping, using, and restoring!
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]🎯 Core Features[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Core Features ==[/B][/COLOR][/SIZE]
 
 [B][COLOR="#FF9100"]Smart Cloak Detection[/COLOR][/B]
 • Automatically finds ALL teleportation cloaks in your bags
@@ -38,7 +38,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]🎮 Supported Teleportation Cloaks[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Supported Teleportation Cloaks ==[/B][/COLOR][/SIZE]
 
 [B]Guild Cloaks (All Versions)[/B]
 • [COLOR="#4ecdc4"]Cloak of Coordination[/COLOR] (IDs: 65274, 65360)
@@ -49,7 +49,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]💡 How It Works[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== How It Works ==[/B][/COLOR][/SIZE]
 
 [B]Step 1:[/B] Type [CODE]/ccu[/CODE] to activate the addon
 [B]Step 2:[/B] Click the teleport button that appears
@@ -64,7 +64,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]🔧 Commands & Configuration[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Commands & Configuration ==[/B][/COLOR][/SIZE]
 
 [B]Slash Commands:[/B]
 [CODE]/ccu[/CODE] - Activate addon and show teleport button
@@ -80,7 +80,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]🌟 Advanced Features[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Advanced Features ==[/B][/COLOR][/SIZE]
 
 [B][COLOR="#FF9100"]Draggable Interface[/COLOR][/B]
 • Position the button anywhere on screen
@@ -102,7 +102,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]✅ Universal Compatibility[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Universal Compatibility ==[/B][/COLOR][/SIZE]
 
 • The War Within (11.0.5+)
 • Dragonflight (10.x)
@@ -111,7 +111,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]📥 Quick Installation[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Quick Installation ==[/B][/COLOR][/SIZE]
 
 [B]1.[/B] Download CCU
 [B]2.[/B] Extract to your [I]Interface/AddOns[/I] folder
@@ -121,7 +121,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]🐛 Troubleshooting Guide[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Troubleshooting Guide ==[/B][/COLOR][/SIZE]
 
 [B][COLOR="#FF9100"]Button not appearing?[/COLOR][/B]
 • Ensure you have a teleportation cloak in bags
@@ -143,7 +143,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]📊 Statistics & Performance[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Statistics & Performance ==[/B][/COLOR][/SIZE]
 
 • [B]< 100KB[/B] memory usage
 • [B]0ms[/B] impact on frame time
@@ -153,7 +153,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]🎯 Perfect For[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Perfect For ==[/B][/COLOR][/SIZE]
 
 • [B]Raiders[/B] - Quick returns to raid entrance
 • [B]M+ Players[/B] - Fast resets between keys
@@ -163,7 +163,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]💬 Community & Support[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Community & Support ==[/B][/COLOR][/SIZE]
 
 [B]Get Help:[/B]
 • [URL="https://github.com/donniedice/CoordinationCloakUtility"]Documentation on GitHub[/URL]
@@ -177,7 +177,7 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]🏆 Reviews & Testimonials[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Reviews & Testimonials ==[/B][/COLOR][/SIZE]
 
 [I]"Never lose your BiS cloak again! This addon is a game-changer!"[/I]
 - Happy Raider
@@ -190,9 +190,9 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[SIZE=4][COLOR="#950041"][B]📈 Development Status[/B][/COLOR][/SIZE]
+[SIZE=4][COLOR="#950041"][B]== Development Status ==[/B][/COLOR][/SIZE]
 
-[COLOR="#2dc26b"][B]🟢 Actively Maintained[/B][/COLOR]
+[COLOR="#2dc26b"][B][+] Actively Maintained[/B][/COLOR]
 • Regular updates for new patches
 • Quick bug fixes
 • Community-driven features
@@ -200,10 +200,10 @@ CCU revolutionizes teleportation cloak usage in World of Warcraft! Never again f
 
 [CENTER][COLOR="#FF9100"]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/COLOR][/CENTER]
 
-[CENTER][SIZE=4][COLOR="#950041"][B]🎮 Part of the RGX Mods Family[/B][/COLOR][/SIZE]
+[CENTER][SIZE=4][COLOR="#950041"][B]>>> Part of the RGX Mods Family <<<[/B][/COLOR][/SIZE]
 
 [I]Quality addons for the discerning player[/I]
 
 [URL="https://discord.gg/hcaxHDNEwa"][COLOR="#FF9100"]RGX Mods[/COLOR][/URL] | [URL="https://www.curseforge.com/members/donniedice/projects"][COLOR="#FF9100"]All Addons[/COLOR][/URL] | [URL="https://github.com/donniedice"][COLOR="#FF9100"]Support[/COLOR][/URL]
 
-Made with ❤️ by the [COLOR="#950041"]RealmGX Community[/COLOR][/CENTER]
+Made with love by the [COLOR="#950041"]RealmGX Community[/COLOR][/CENTER]
