@@ -267,8 +267,9 @@ function CCU:HandleBackSlotItem()
             -- Cloak is off cooldown, show the button
             print(self.CCU_PREFIX .. itemLink .. self.L.CLOAK_EQUIPPED)
             if not InCombatLockdown() then
+                -- Use slot 15 (back slot) for the secure button
                 self.secureButton:SetAttribute("type", "item")
-                self.secureButton:SetAttribute("item", itemLink)
+                self.secureButton:SetAttribute("item", "15")  -- Back slot number
                 self.secureButton:SetNormalTexture(GetItemIcon(equippedCloakID))
                 self.secureButton:Show()
             end
@@ -425,8 +426,9 @@ function CCU:EquipAndUseCloak(cloakID, cloakLink)
 
     -- Set up and show the secure button
     if not InCombatLockdown() then
+        -- Use slot 15 (back slot) for the secure button
         self.secureButton:SetAttribute("type", "item")
-        self.secureButton:SetAttribute("item", cloakLink)
+        self.secureButton:SetAttribute("item", "15")  -- Back slot number
         self.secureButton:SetNormalTexture(GetItemIcon(cloakID))
         self.secureButton:Show()
     end
@@ -497,6 +499,8 @@ end
 CCU.events = {
     ADDON_LOADED = function(self, addonName)
         if addonName == "CoordinationCloakUtility" then
+            -- Initialize localization
+            self:InitializeLocalization()
             self:CreateSecureButton()
             self.VersionNumber = string.format("%s %s|r", self.colors.highlight, C_AddOns.GetAddOnMetadata("CoordinationCloakUtility", "Version"))
         end

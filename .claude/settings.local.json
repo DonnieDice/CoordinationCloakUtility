@@ -37,7 +37,8 @@
       "WebFetch(domain:www.wowhead.com)",
       "Bash(xcopy:*)",
       "Bash(robocopy:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "WebFetch(domain:www.curseforge.com)"
     ],
     "deny": [],
     "ask": []

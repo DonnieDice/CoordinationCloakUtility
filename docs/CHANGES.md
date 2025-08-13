@@ -1,3 +1,9 @@
+## v3.3.1
+- Fixed - Critical bug where teleport button didn't actually use the cloak
+- Added - Multi-language support (English, Spanish, German, French)
+- Fixed - Secure button now properly uses slot 15 (back slot) instead of item link
+- Improved - Wago.io description formatting
+
 ## v3.3.0
 - Added - RGX Mods brand-compliant README with proper badges and formatting
 - Added - Complete distributor descriptions for all platforms (CurseForge, Wago, WoWInterface)
