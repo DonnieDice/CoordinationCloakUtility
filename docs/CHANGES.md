@@ -1,3 +1,9 @@
+## v3.2.6
+- Fixed - Complete Discord webhook documentation with found URLs
+- Updated - Discord notification format to match RGX Mods standard
+- Added - Proper webhook status tracking in documentation
+- Testing - First proper release with correct Discord formatting
+
 ## v3.2.5
 - Added - Consolidated Discord integration documentation in DISCORD_INTEGRATION.md
 - Removed - SECRETS.md (consolidated into Discord integration doc)

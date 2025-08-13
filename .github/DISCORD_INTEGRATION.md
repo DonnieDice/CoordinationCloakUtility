@@ -10,17 +10,20 @@ This document consolidates Discord webhook configuration and formatting standard
 
 ### Addon-Specific Discord Webhooks
 
-| Addon | Webhook URL | Location Found |
-|-------|-------------|----------------|
-| **CCU** | `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ` | .github/workflows/release.yml |
-| **BLU Classic** | `https://discord.com/api/webhooks/1404619741997563965/W99EcO9tGg1b9hz7rHYyHRJfsL1oeN1vOt0MMMOlsra5oGUDzbviiyILbKwnpxCvYZyJ` | .env file |
-| **SRLU** | `https://discord.com/api/webhooks/1402510054506369154/4JFpuLjAej8RVI9VfiwdfJvR6wLptJsTiJ0UZ2ePGyZ7lDh0AOcVHTfuxZoC0e2JukJ8` | .github/workflows/README.md |
-| **FFLU** | Uses `${{ secrets.DISCORD_WEBHOOK }}` - webhook not found in files | GitHub Secret |
-| **SQP** | Uses `${{ secrets.DISCORD_WEBHOOK }}` - webhook not found in files | GitHub Secret |
-| **BLU** | Uses `${{ secrets.DISCORD_WEBHOOK }}` - webhook not found in files | GitHub Secret |
-| **RND** | Uses `${{ secrets.DISCORD_WEBHOOK }}` - webhook not found in files | GitHub Secret |
+| Addon | Webhook URL | Status |
+|-------|-------------|--------|
+| **CCU** | `https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ` | ✅ Found in workflow |
+| **BLU Classic** | `https://discord.com/api/webhooks/1404619741997563965/W99EcO9tGg1b9hz7rHYyHRJfsL1oeN1vOt0MMMOlsra5oGUDzbviiyILbKwnpxCvYZyJ` | ✅ Found in .env |
+| **SRLU** | `https://discord.com/api/webhooks/1402510054506369154/4JFpuLjAej8RVI9VfiwdfJvR6wLptJsTiJ0UZ2ePGyZ7lDh0AOcVHTfuxZoC0e2JukJ8` | ✅ Found in docs |
+| **FFLU** | *Need to retrieve from Discord* | ❌ Using GitHub Secret |
+| **SQP** | *Need to retrieve from Discord* | ❌ Using GitHub Secret |
+| **BLU** | *Need to retrieve from Discord* | ❌ Using GitHub Secret |
+| **RND** | *Need to retrieve from Discord* | ❌ Using GitHub Secret |
 
-**Note**: Some addons have webhooks hardcoded in their repos, while others properly use GitHub Secrets. Consider moving all webhooks to GitHub Secrets for better security.
+**Action Required**: 
+1. Retrieve missing webhook URLs from Discord server webhook settings
+2. Add them to this documentation for local reference
+3. Consider whether to hardcode them in workflows or keep as secrets
 
 ## Standard Notification Format
 
