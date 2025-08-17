@@ -1,5 +1,5 @@
 ## Interface: 110105
-## Version: v3.3.1
+## Version: v3.3.2
 ## Title: |cff950041C|r|cffffffffoordination|r |cff950041C|r|cffffffffloak|r |cff950041U|r|cfffffffftility!|r 
 ## Notes: Coordination Cloak Made Easy!  |n|r  |cff950041/ccu -|r Use AddOn!  |n|r   |cff950041DonnieDice|r
 

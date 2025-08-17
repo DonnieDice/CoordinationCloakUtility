@@ -499,8 +499,6 @@ end
 CCU.events = {
     ADDON_LOADED = function(self, addonName)
         if addonName == "CoordinationCloakUtility" then
-            -- Initialize localization
-            self:InitializeLocalization()
             self:CreateSecureButton()
             self.VersionNumber = string.format("%s %s|r", self.colors.highlight, C_AddOns.GetAddOnMetadata("CoordinationCloakUtility", "Version"))
         end
