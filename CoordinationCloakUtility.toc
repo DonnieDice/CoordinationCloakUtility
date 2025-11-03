@@ -1,5 +1,5 @@
 ## Interface: 110205
-## Version: v3.3.2
+## Version: v3.3.3
 ## Title: |cff950041C|r|cffffffffoordination|r |cff950041C|r|cffffffffloak|r |cff950041U|r|cfffffffftility!|r 
 ## Notes: Coordination Cloak Made Easy!  |n|r  |cff950041/ccu -|r Use AddOn!  |n|r   |cff950041DonnieDice|r
 
@@ -18,5 +18,11 @@ locales\en.lua
 locales\es.lua
 locales\de.lua
 locales\fr.lua
+locales\it.lua
+locales\ko.lua
+locales\pt.lua
+locales\ru.lua
+locales\cn.lua
+locales\tw.lua
 locales\localization.lua
 data\core.lua

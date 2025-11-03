@@ -1,3 +1,6 @@
+## v3.3.3
+- Added - Placeholder localization files for Italian, Korean, Portuguese (Brazil), Russian, and Chinese (Simplified and Traditional).
+
 ## v3.3.2
 - Updated - TOC interface version to 110205 for retail compatibility.
 - Updated - README to clarify that the addon is for the retail version of World of Warcraft only.

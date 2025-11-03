@@ -28,6 +28,19 @@
 - [Shroud of Cooperation](https://www.wowhead.com/item=63352) (Horde)
 - All variants and upgraded versions
 
+### 🌎 Localization
+This addon includes support for the following languages:
+- English
+- German
+- Spanish
+- French
+- Italian
+- Korean
+- Portuguese (Brazil)
+- Russian
+- Chinese (Simplified)
+- Chinese (Traditional)
+
 ## 📦 Installation
 
 ### Download Options
