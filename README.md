@@ -62,11 +62,12 @@
 
 ## 🎮 Compatibility
 
-| Version | Interface | Status |
-|---------|-----------|--------|
-| **The War Within** | 110002+ | ✅ Fully Supported |
-| **Dragonflight** | 100207 | ✅ Compatible |
-| **Previous Expansions** | Various | ✅ Compatible |
+This addon is compatible with the **retail** version of World of Warcraft only.
+
+| Version            | Interface | Status           |
+| ------------------ | --------- | ---------------- |
+| **The War Within** | 110205+   | ✅ Fully Supported |
+| **Dragonflight**   | 100207    | ✅ Compatible      |
 
 ## 🐛 Troubleshooting
 

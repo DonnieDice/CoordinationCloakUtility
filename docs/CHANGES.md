@@ -1,3 +1,7 @@
+## v3.3.2
+- Updated - TOC interface version to 110205 for retail compatibility.
+- Updated - README to clarify that the addon is for the retail version of World of Warcraft only.
+
 ## v3.3.1
 - Fixed - Critical bug where teleport button didn't actually use the cloak
 - Added - Multi-language support (English, Spanish, German, French)
