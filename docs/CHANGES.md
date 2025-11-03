@@ -1,3 +1,7 @@
+## v3.3.4
+- Fixed - Corrected changelog to reflect that translations were added, not placeholders.
+- Fixed - Corrected compatibility section in the Discord release message.
+
 ## v3.3.3
 - Added - Localization for Italian, Korean, Portuguese (Brazil), Russian, and Chinese (Simplified and Traditional).
 
