@@ -1,3 +1,6 @@
+## v3.3.5
+- Fixed - toc bump - [*.toc]
+
 ## v3.3.4
 - Fixed - Corrected changelog to reflect that translations were added, not placeholders.
 - Fixed - Corrected compatibility section in the Discord release message.
