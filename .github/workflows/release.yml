@@ -12,8 +12,7 @@ env:
   WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
   WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
   GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-  DISCORD_WEBHOOK: https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
-
+  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 jobs:
   release:
     runs-on: ubuntu-latest

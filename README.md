@@ -73,14 +73,6 @@ This addon includes support for the following languages:
 3. **Teleportation** - Click the button to use the cloak ability
 4. **Auto-Restore** - Re-equips your original cloak after teleporting
 
-## 🎮 Compatibility
-
-This addon is compatible with the **retail** version of World of Warcraft only.
-
-| Version            | Interface | Status           |
-| ------------------ | --------- | ---------------- |
-| **The War Within** | 110205+   | ✅ Fully Supported |
-| **Dragonflight**   | 100207    | ✅ Compatible      |
 
 ## 🐛 Troubleshooting
 
