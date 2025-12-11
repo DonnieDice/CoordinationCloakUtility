@@ -1,5 +1,5 @@
 ## Interface: 40402,50503,110207,120000
-## Version: v3.3.6
+## Version: v3.3.7
 ## Title: |cff950041C|r|cffffffffoordination|r |cff950041C|r|cffffffffloak|r |cff950041U|r|cfffffffftility!|r 
 ## Notes: Coordination Cloak Made Easy!  |n|r  |cff950041/ccu -|r Use AddOn!  |n|r   |cff950041DonnieDice|r
 
