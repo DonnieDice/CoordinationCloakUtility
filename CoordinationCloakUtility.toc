@@ -4,7 +4,7 @@
 ## Notes: Coordination Cloak Made Easy!  |n|r  |cff950041/ccu -|r Use AddOn!  |n|r   |cff950041DonnieDice|r
 
 ## Author: DonnieDice
-## Email: joseph@cranberriestudios.com
+## Email: donniedice@protonmail.com
 ## SavedVariables: CCUDB
 ## IconTexture: Interface\AddOns\CoordinationCloakUtility\images\icon
 
