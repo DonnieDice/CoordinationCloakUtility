@@ -3,19 +3,19 @@ name: Package and Release
 on:
   push:
     tags:
-      - '**'
-    branches:
-      - alpha
+      - 'v*'  # Triggers only on version tags like v1.0.0, v1.0.0-alpha, etc.
 
 env:
   CF_API_KEY: ${{ secrets.CF_API_KEY }}
   WOWI_API_TOKEN: ${{ secrets.WOWI_API_TOKEN }}
   WAGO_API_TOKEN: ${{ secrets.WAGO_API_TOKEN }}
   GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Clone Project
         uses: actions/checkout@v4
@@ -26,39 +26,43 @@ jobs:
         run: |
           git config --global user.name "donniedice"
           git config --global user.email "donniedice@protonmail.com"
-          
+
       - name: Set Release Type
         id: set_release_type
         run: |
-          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
-            TAG_NAME=${{ github.ref }}
-            if [[ "$TAG_NAME" == *"beta"* ]]; then
-              echo "release_type=beta" >> $GITHUB_OUTPUT
-            elif [[ "$TAG_NAME" == *"alpha"* ]]; then
-              echo "release_type=alpha" >> $GITHUB_OUTPUT
-            else
-              echo "release_type=release" >> $GITHUB_OUTPUT
-            fi
-          else
+          TAG_NAME=${{ github.ref }}
+          if [[ "$TAG_NAME" == *"beta"* ]]; then
+            echo "release_type=beta" >> $GITHUB_OUTPUT
+          elif [[ "$TAG_NAME" == *"alpha"* ]]; then
             echo "release_type=alpha" >> $GITHUB_OUTPUT
+          else
+            echo "release_type=release" >> $GITHUB_OUTPUT
           fi
 
       - name: Extract Version from TOC
         id: extract_version
         run: |
-          version=$(grep -oP '^## Version: \K(.*)' ./*.toc)
+          # Try to get version from TOC file, fallback to tag name
+          if [ -f "CoordinationCloakUtility.toc" ]; then
+            version=$(grep -E "^## Version:" CoordinationCloakUtility.toc | awk '{print $3}')
+            if [ -z "$version" ]; then
+              version="${{ github.ref_name }}"
+            fi
+          else
+            version="${{ github.ref_name }}"
+          fi
+          echo "Extracted version: $version"
           echo "version=$version" >> $GITHUB_OUTPUT
-          echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%S.000Z)" >> $GITHUB_OUTPUT
 
       - name: Extract Changelog
         id: extract_changelog
         run: |
           if [ -f "docs/CHANGES.md" ]; then
-            # Extract only the most recent version's changelog (everything between first ## and second ##)
-            CHANGELOG=$(awk '/^## v[0-9]/{if(NR>1)exit;next} NR>1' docs/CHANGES.md | sed '/^$/d' | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+            # Read the changelog and properly escape it for JSON
+            CHANGELOG=$(cat docs/CHANGES.md | head -20 | jq -Rs .)
             echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
           else
-            echo "changelog=No changelog available" >> $GITHUB_OUTPUT
+            echo "changelog=\"No changelog available\"" >> $GITHUB_OUTPUT
           fi
 
       - name: Package and Release
@@ -66,115 +70,131 @@ jobs:
         with:
           release-type: ${{ steps.set_release_type.outputs.release_type }}
 
-      - name: Send Discord Success Notification
-        if: success() && steps.set_release_type.outputs.release_type == 'release'
+      - name: Send Discord Notification
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          curl -H "Content-Type: application/json" \
-            -X POST \
-            -d "{
-              \"username\": \"CCU Update\",
-              \"avatar_url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png\",
-              \"embeds\": [{
-                \"title\": \"🎉 CCU | Coordination Cloak Utility - ${{ steps.extract_version.outputs.version }}\",
-                \"description\": \"**Teleport with ease!** A new version of CCU has been released!\\n\\n🎵 **What's New:**\\n${{ steps.extract_changelog.outputs.changelog }}\",
-                \"url\": \"https://github.com/DonnieDice/CoordinationCloakUtility/releases/tag/${{ github.ref_name }}\",
-                \"color\": 9830721,
-                \"thumbnail\": {
-                  \"url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png\"
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "Discord webhook not configured, skipping notification"
+            exit 0
+          fi
+          
+          # Determine release type emoji and color
+          RELEASE_TYPE="${{ steps.set_release_type.outputs.release_type }}"
+          if [ "$RELEASE_TYPE" = "alpha" ]; then
+            EMOJI="🔬"
+            TYPE_TEXT=" Alpha"
+            COLOR=16711680
+          elif [ "$RELEASE_TYPE" = "beta" ]; then
+            EMOJI="🧪"
+            TYPE_TEXT=" Beta"
+            COLOR=16744448
+          else
+            EMOJI="🎉"
+            TYPE_TEXT=""
+            COLOR=9830721
+          fi
+          
+          # Get version - use tag name as fallback
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          if [ -z "$VERSION" ]; then
+            VERSION="${{ github.ref_name }}"
+          fi
+          
+          # Get the changelog (already JSON-escaped from previous step)
+          CHANGELOG='${{ steps.extract_changelog.outputs.changelog }}'
+          
+          # Build the JSON payload using jq for proper escaping
+          JSON_PAYLOAD=$(jq -n \
+            --arg emoji "$EMOJI" \
+            --arg type_text "$TYPE_TEXT" \
+            --arg version "$VERSION" \
+            --arg tag "${{ github.ref_name }}" \
+            --argjson changelog "$CHANGELOG" \
+            --argjson color "$COLOR" \
+            '{
+              "content": "",
+              "username": "CCU Release",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png",
+              "embeds": [{
+                "title": "\($emoji) CCU | Coordination Cloak Utility - \($version)\($type_text)",
+                "description": "**Teleport with ease!** A new version of CCU has been released!\n\n🎵 **What'\''s New:**\n\($changelog)\n\n**Coordinate with your party using the Coordination Cloak!**",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/releases/tag/\($tag)",
+                "color": $color,
+                "thumbnail": {
+                  "url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png"
                 },
-                \"fields\": [
+                "fields": [
                   {
-                    \"name\": \"📥 Downloads\",
-                    \"value\": \"[CurseForge](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility)\\n[Wago.io](https://addons.wago.io/addons/coordinationcloakutility)\\n[GitHub](https://github.com/DonnieDice/CoordinationCloakUtility)\",
-                    \"inline\": true
+                    "name": "📥 Downloads",
+                    "value": "[CurseForge](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility)\n[Wago.io](https://addons.wago.io/addons/coordinationcloakutility)\n[GitHub](https://github.com/DonnieDice/CoordinationCloakUtility)",
+                    "inline": true
                   },
                   {
-                    \"name\": \"🎮 Compatibility\",
-                    \"value\": \"✅ Retail (The War Within)\",
-                    \"inline\": true
+                    "name": "🎮 Compatibility",
+                    "value": "✅ Retail (The War Within)",
+                    "inline": true
                   },
                   {
-                    \"name\": \"💬 Support\",
-                    \"value\": \"[Report Issues](https://github.com/DonnieDice/CoordinationCloakUtility/issues)\\n[Buy Me Coffee](https://www.buymeacoffee.com/donniedice)\",
-                    \"inline\": true
+                    "name": "💬 Support",
+                    "value": "[Join Discord](https://discord.gg/N7kdKAHVVF)\n[Report Issues](https://github.com/DonnieDice/CoordinationCloakUtility/issues)",
+                    "inline": true
                   }
                 ],
-                \"footer\": {
-                  \"text\": \"RGX Mods - RealmGX Community\",
-                  \"icon_url\": \"https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif\"
+                "footer": {
+                  "text": "RGX Mods - RealmGX Community",
+                  "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
                 },
-                \"timestamp\": \"${{ steps.extract_version.outputs.timestamp }}\"
+                "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'"
               }]
-            }" https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
-
-      - name: Send Discord Beta Notification
-        if: success() && steps.set_release_type.outputs.release_type == 'beta'
-        run: |
+            }')
+          
+          echo "Sending Discord notification..."
+          echo "Version: $VERSION"
+          
+          # Send to Discord
           curl -H "Content-Type: application/json" \
-            -X POST \
-            -d "{
-              \"username\": \"CCU Beta\",
-              \"avatar_url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png\",
-              \"embeds\": [{
-                \"title\": \"🧪 CCU Beta - ${{ steps.extract_version.outputs.version }}\",
-                \"description\": \"A beta version of Coordination Cloak Utility is available for testing!\\n\\n**What's New:**\\n${{ steps.extract_changelog.outputs.changelog }}\",
-                \"color\": 16744448,
-                \"fields\": [
-                  {
-                    \"name\": \"📥 Download Beta\",
-                    \"value\": \"[CurseForge](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility)\\n[GitHub](https://github.com/DonnieDice/CoordinationCloakUtility/releases)\"
-                  }
-                ],
-                \"footer\": {
-                  \"text\": \"RGX Mods - Beta Build\",
-                  \"icon_url\": \"https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif\"
-                },
-                \"timestamp\": \"${{ steps.extract_version.outputs.timestamp }}\"
-              }]
-            }" https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
-
-      - name: Send Discord Alpha Notification
-        if: success() && steps.set_release_type.outputs.release_type == 'alpha'
-        run: |
-          curl -H "Content-Type: application/json" \
-            -X POST \
-            -d "{
-              \"username\": \"CCU Alpha\",
-              \"avatar_url\": \"https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png\",
-              \"embeds\": [{
-                \"title\": \"🔬 CCU Alpha - ${{ steps.extract_version.outputs.version }}\",
-                \"description\": \"Development build for testing\\n\\n**What's New:**\\n${{ steps.extract_changelog.outputs.changelog }}\",
-                \"color\": 16711680,
-                \"footer\": {
-                  \"text\": \"RGX Mods - Alpha Build\",
-                  \"icon_url\": \"https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif\"
-                },
-                \"timestamp\": \"${{ steps.extract_version.outputs.timestamp }}\"
-              }]
-            }" https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
+               -X POST \
+               -d "$JSON_PAYLOAD" \
+               "$DISCORD_WEBHOOK"
 
       - name: Send Discord Failure Notification
         if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          curl -H "Content-Type: application/json" \
-            -X POST \
-            -d '{
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "Discord webhook not configured, skipping notification"
+            exit 0
+          fi
+          
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          if [ -z "$VERSION" ]; then
+            VERSION="Unknown"
+          fi
+          
+          JSON_PAYLOAD=$(jq -n \
+            --arg version "$VERSION" \
+            --arg run_id "${{ github.run_id }}" \
+            '{
+              "content": "",
               "username": "CCU Build Failed",
-              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/icon.png",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png",
               "embeds": [{
                 "title": "❌ CCU Build Failed",
                 "description": "The release workflow encountered an error",
-                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/${{ github.run_id }}",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/\($run_id)",
                 "color": 15158332,
                 "fields": [
                   {
                     "name": "Version",
-                    "value": "${{ steps.extract_version.outputs.version || 'Unknown' }}",
+                    "value": $version,
                     "inline": true
                   },
                   {
                     "name": "Workflow",
-                    "value": "[View Logs](https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/${{ github.run_id }})",
+                    "value": "[View Logs](https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/\($run_id))",
                     "inline": true
                   }
                 ],
@@ -182,11 +202,11 @@ jobs:
                   "text": "RGX Mods - Build System",
                   "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
                 },
-                "timestamp": "${{ steps.extract_version.outputs.timestamp }}"
+                "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'"
               }]
-            }' https://discord.com/api/webhooks/1404939800921899048/rZZbVLou6M4kqNuCIwYPcNDK9W_qRC5duF-xXgBgmSxf5TU--sYfOEO14LOLDB3g1_JJ
-
-      - name: Parse Changelog
-        if: ${{ steps.set_release_type.outputs.release_type != 'alpha' }}
-        run: |
-          # Your existing changelog parsing logic
+            }')
+          
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "$JSON_PAYLOAD" \
+               "$DISCORD_WEBHOOK"
