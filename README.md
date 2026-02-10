@@ -2,7 +2,7 @@
 
 <img src="images/ccu_logo.png" alt="Coordination Cloak Utility Logo" width="400">
 
-# 🪄 CCU - Coordination Cloak Utility
+# 🌐 CCU - Coordination Cloak Utility
 
 ### *One Click, Any Destination!*
 
