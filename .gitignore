@@ -1,0 +1,21 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Lua/WoW Addon specific
+*.bak
+*.lua.bak
+*.toc.bak
+*.zip
+*.curseforge-build
+CoordinationCloakUtility.zip # Specific build artifact
+
+# IDE/Editor files
+.vscode/
+
+# Dependency directories
+libs/ # Assuming external libraries might be placed here
+
+# Gemini specific (if any generated)
+.gemini/
+.claude/
