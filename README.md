@@ -2,7 +2,7 @@
 
 <img src="images/ccu_logo.png" alt="Coordination Cloak Utility Logo" width="400">
 
-# 💞 CCU - Coordination Cloak Utility
+# 🪄 CCU - Coordination Cloak Utility
 
 ### *One Click, Any Destination!*
 
@@ -16,7 +16,7 @@
 
 ## ✨ Features
 
-🪄 **Smart Cloak Detection** - Automatically finds all teleportation cloaks in your bags  
+**Smart Cloak Detection** - Automatically finds all teleportation cloaks in your bags  
 ⚡ **One-Click Teleportation** - Equip, use, and re-equip with a single button  
 🎯 **Auto Gear Swap** - Saves and restores your original cloak automatically  
 🛡️ **Combat Safe** - Prevents gear changes during combat  
