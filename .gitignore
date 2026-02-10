@@ -19,3 +19,8 @@ libs/ # Assuming external libraries might be placed here
 # Gemini specific (if any generated)
 .gemini/
 .claude/
+
+# Internal documentation/agent files
+claude.md
+agents.md
+todo.md
