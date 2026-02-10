@@ -91,7 +91,7 @@ jobs:
             TYPE_TEXT=" Beta"
             COLOR=16744448
           else
-            EMOJI="🎉"
+            EMOJI="💞"
             TYPE_TEXT=""
             COLOR=9830721
           fi
