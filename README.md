@@ -28,6 +28,10 @@
 - [Shroud of Cooperation](https://www.wowhead.com/item=63352) (Horde)
 - All variants and upgraded versions
 
+### 🎮 Compatibility
+- ✅ Midnight
+- ✅ MoP Classic
+
 ### 🌎 Localization
 This addon includes support for the following languages:
 - English
