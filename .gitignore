@@ -24,3 +24,4 @@ libs/ # Assuming external libraries might be placed here
 claude.md
 agents.md
 todo.md
+GEMINI.md
