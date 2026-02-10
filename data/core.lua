@@ -36,6 +36,10 @@ CCU.reEquipStartTime = nil    -- Timestamp when re-equip started
 CCU.reEquipTimeout = 10      -- Timeout duration in seconds
 CCU.reEquipMaxRetries = 3    -- Maximum number of re-equip retries
 
+CCU.reEquipTimer = nil -- Timer for re-equip check
+CCU.lastZone = nil -- Last known zone
+CCU.lastSubZone = nil -- Last known subzone
+
 CCU.currentCloakID = nil -- Current equipped cloak ID
 CCU.lastNonTeleportationCloakID = nil -- Last non-teleportation cloak ID
 
@@ -307,6 +311,56 @@ function CCU:ResetCloakProcess()
     self:HandleBackSlotItem()
 end
 
+-- Function to start the re-equip check timer
+function CCU:StartReEquipCheck()
+    if self.reEquipTimer then
+        self.reEquipTimer:Cancel()
+    end
+
+    self.lastZone = GetZoneText()
+    self.lastSubZone = GetSubZoneText()
+    self.reEquipStartTime = GetTime()
+
+    self.reEquipTimer = C_Timer.NewTicker(1, function()
+        self:CheckTeleportAndReequip()
+    end)
+end
+
+-- Function to check for teleportation and re-equip the original cloak
+function CCU:CheckTeleportAndReequip()
+    local currentTime = GetTime()
+    local elapsed = currentTime - (self.reEquipStartTime or 0)
+
+    if elapsed > self.reEquipTimeout then
+        if self.reEquipTimer then
+            self.reEquipTimer:Cancel()
+            self.reEquipTimer = nil
+        end
+        print(self.CCU_PREFIX .. self.L.REEQUIP_FAILED)
+        self:ResetCloakProcess()
+        return
+    end
+
+    local zoneChanged = self.lastZone ~= GetZoneText() or self.lastSubZone ~= GetSubZoneText()
+    local backSlotID = GetInventorySlotInfo("BackSlot")
+    local equippedCloakID = GetInventoryItemID("player", backSlotID)
+
+    if zoneChanged then
+        if self.reEquipTimer then
+            self.reEquipTimer:Cancel()
+            self.reEquipTimer = nil
+        end
+        self:ReequipOriginalCloak()
+    elseif equippedCloakID == self.originalCloak then
+        -- This case handles if the re-equip happened before the location check fired.
+        if self.reEquipTimer then
+            self.reEquipTimer:Cancel()
+            self.reEquipTimer = nil
+        end
+        self:ResetCloakProcess()
+    end
+end
+
 -- Function to re-equip the original cloak after teleportation
 function CCU:ReequipOriginalCloak()
     if not self.teleportInProgress then return end
@@ -341,16 +395,8 @@ function CCU:ReequipOriginalCloak()
                 EquipItemByName(self.originalCloak)
                 print(self.CCU_PREFIX .. self.L.REEQUIP_CLOAK .. originalCloakLink)
                 self.reEquipAttempted = true
-                self.reEquipStartTime = GetTime()
 
                 frame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
-            else
-                -- Check if timeout-- Check if timeout has been reached
-                if GetTime() - self.reEquipStartTime >= self.reEquipTimeout then
-                    print(self.CCU_PREFIX .. self.L.REEQUIP_FAILED)
-                    frame:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED")
-                    self:ResetCloakProcess()
-                end
             end
         else
             -- Player is in loading screen, set flag to attempt re-equip after
@@ -572,7 +618,7 @@ CCU.events = {
 
     UNIT_SPELLCAST_SUCCEEDED = function(self, unit, _, spellID)
         if unit == "player" and self.teleportInProgress then
-            self:ReequipOriginalCloak()
+            self:StartReEquipCheck()
         end
     end
 }
