@@ -7,6 +7,12 @@ ignore:
   - .gitignore
   - README.md
   - .pkgmeta
+  - GEMINI.md
+  - CLAUDE.md
+  - agents.md
+  - todo.md
+  - .claude
+  - .gemini
 
 plain-copy:
   - LICENSE
