@@ -117,10 +117,24 @@ function CCU:CreateSecureButton()
     button:SetHighlightTexture("Interface\\Buttons\\ButtonHilight-Square")
     button:RegisterForClicks("AnyUp")
     button:SetScript("PostClick", function()
-        CCU.teleportInProgress = true
-        print(CCU.CCU_PREFIX .. CCU.L.TELEPORTATION_IN_PROGRESS)
+        local backSlotID = GetInventorySlotInfo("BackSlot")
+        local equippedCloakID = GetInventoryItemID("player", backSlotID)
+        if equippedCloakID and CCU.usableCloaks[equippedCloakID] and not CCU.teleportInProgress then
+            CCU.teleportInProgress = true
+            print(CCU.CCU_PREFIX .. CCU.L.TELEPORTATION_IN_PROGRESS)
+        end
     end)
     button:Hide()
+end
+
+function CCU:ConfigureSecureButtonForBackSlot(cloakID)
+    if InCombatLockdown() or not self.secureButton then return end
+
+    -- Use a secure macro against the equipped back slot. Retail no longer reliably
+    -- treats the raw string "15" as a usable item token for the secure item action.
+    self.secureButton:SetAttribute("type", "macro")
+    self.secureButton:SetAttribute("macrotext", "/use 15")
+    self.secureButton:SetNormalTexture(GetItemIcon(cloakID))
 end
 
 -- Function to format time in hours, minutes, and seconds with highlight and info colors
@@ -271,10 +285,7 @@ function CCU:HandleBackSlotItem()
             -- Cloak is off cooldown, show the button
             print(self.CCU_PREFIX .. itemLink .. self.L.CLOAK_EQUIPPED)
             if not InCombatLockdown() then
-                -- Use slot 15 (back slot) for the secure button
-                self.secureButton:SetAttribute("type", "item")
-                self.secureButton:SetAttribute("item", "15")  -- Back slot number
-                self.secureButton:SetNormalTexture(GetItemIcon(equippedCloakID))
+                self:ConfigureSecureButtonForBackSlot(equippedCloakID)
                 self.secureButton:Show()
             end
         else
@@ -472,10 +483,7 @@ function CCU:EquipAndUseCloak(cloakID, cloakLink)
 
     -- Set up and show the secure button
     if not InCombatLockdown() then
-        -- Use slot 15 (back slot) for the secure button
-        self.secureButton:SetAttribute("type", "item")
-        self.secureButton:SetAttribute("item", "15")  -- Back slot number
-        self.secureButton:SetNormalTexture(GetItemIcon(cloakID))
+        self:ConfigureSecureButtonForBackSlot(cloakID)
         self.secureButton:Show()
     end
 end
