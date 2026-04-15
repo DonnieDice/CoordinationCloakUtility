@@ -1,4 +1,4 @@
-# Version 3.4.1
-- Fixed the Retail secure-use button so clicking the CCU cloak icon now reliably activates the equipped back-slot teleport effect.
-- Tightened the teleport start handling so CCU only marks teleportation as in progress after a valid cloak-click context.
-- Cleaned up the release notes and synced the README and CurseForge description with the current command set and CCU brand colors.
+# Version 3.5.0
+- Added a movable minimap icon that uses the CCU logo and triggers the teleport cloak flow without needing to type `/ccu` first.
+- Kept `/ccu` as the popup-button path while teaching the minimap icon to share the same secure teleport setup when a cloak is ready.
+- Updated CCU branding to use the `#8b0941` brand color and moved addon art into the `media` folder, including the new `ccu.tga` minimap asset.
