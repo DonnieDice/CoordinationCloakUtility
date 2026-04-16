@@ -31,9 +31,12 @@ CCU.inCombat = false
 CCU.waitingForItemInfo = false
 CCU.pendingAction = nil
 CCU.cloaksInitialized = false -- Flag to track cloak initialization
+CCU.suppressNextEquipMessage = false
+CCU.suppressNextPopupButton = false
+CCU.forceDefaultMinimapIcon = false
 CCU.reEquipAttempted = false -- Flag to track re-equip attempt
 CCU.reEquipStartTime = nil    -- Timestamp when re-equip started
-CCU.reEquipTimeout = 10      -- Timeout duration in seconds
+CCU.reEquipTimeout = 20      -- Timeout duration in seconds
 CCU.reEquipMaxRetries = 3    -- Maximum number of re-equip retries
 
 CCU.reEquipTimer = nil -- Timer for re-equip check
@@ -60,6 +63,8 @@ CCU.colors = {
 }
 
 CCU.CCU_PREFIX = "|Tinterface/addons/CoordinationCloakUtility/media/icon:16:16|t - [" .. CCU.colors.prefix .. "CCU|r] "
+CCU.MINIMAP_TOOLTIP_ICON = "|TInterface\\AddOns\\CoordinationCloakUtility\\media\\icon.tga:18:18:0:0|t "
+CCU.MINIMAP_TOOLTIP_TITLE = CCU.MINIMAP_TOOLTIP_ICON .. CCU.colors.prefix .. "Coordination Cloak Utility|r " .. "|cffd9c6ffTeleport Helper|r"
 
 -- =====================================================================================
 -- Localization Strings
@@ -92,8 +97,8 @@ CCU.L = {
     CLOAK_UNEQUIPPED = CCU.colors.info .. "Teleportation cloak unequipped.|r",
     HIDING_BUTTON = CCU.colors.info .. "Hiding button.|r",
     PROCESS_RESET = CCU.colors.info .. "Cloak usage process reset.|r",
-    MINIMAP_TOOLTIP = CCU.colors.prefix .. "CCU Minimap Icon|r",
-    MINIMAP_TOOLTIP_ACTION = CCU.colors.info .. "Left-click|r to equip/use a teleport cloak.|r",
+    MINIMAP_TOOLTIP = CCU.colors.prefix .. "Coordination Cloak Utility|r",
+    MINIMAP_TOOLTIP_ACTION = CCU.colors.info .. "Left-click|r to equip or use your teleport cloak.|r",
     MINIMAP_TOOLTIP_DRAG = CCU.colors.info .. "Right-drag|r to move the minimap icon.|r",
 }
 
@@ -128,28 +133,48 @@ end
 function CCU:CreateMinimapButton()
     if self.minimapButton then return end
 
+    if not Minimap then return end
+
     local button = CreateFrame("Button", "CCU_MinimapButton", Minimap, "SecureActionButtonTemplate")
     self.minimapButton = button
     button:SetSize(32, 32)
     button:SetFrameStrata("MEDIUM")
     button:SetFrameLevel(Minimap:GetFrameLevel() + 8)
+    button:SetMovable(true)
+    button:EnableMouse(true)
     button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-    button:RegisterForDrag("RightButton")
+    button:RegisterForDrag("LeftButton")
+
+    local backdrop = button:CreateTexture(nil, "BACKGROUND")
+    backdrop:SetSize(24, 24)
+    backdrop:SetPoint("CENTER", button, "CENTER", 1, 0)
+    backdrop:SetTexture("Interface\\Buttons\\WHITE8X8")
+    if backdrop.SetMask then
+        backdrop:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMaskSmall")
+    end
+    backdrop:SetVertexColor(0.03, 0.03, 0.03, 0.98)
+    button.backdrop = backdrop
 
     local icon = button:CreateTexture(nil, "ARTWORK")
-    icon:SetAllPoints()
+    icon:SetSize(19, 19)
+    icon:SetPoint("CENTER", button, "CENTER", 0, -1)
     icon:SetTexture("Interface\\AddOns\\CoordinationCloakUtility\\media\\ccu")
+    icon:SetTexCoord(0.02, 0.98, 0.02, 0.98)
     button.icon = icon
 
     local overlay = button:CreateTexture(nil, "OVERLAY")
-    overlay:SetSize(53, 53)
-    overlay:SetPoint("TOPLEFT")
+    overlay:SetSize(54, 54)
+    overlay:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
     overlay:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
     button.overlay = overlay
 
     button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
 
-    button:SetScript("OnClick", function(self, mouseButton)
+    button:SetScript("PreClick", function(self, mouseButton)
+        if self.isDragging then
+            return
+        end
+
         if mouseButton == "LeftButton" and not self:GetAttribute("type") then
             CCU:HandleMinimapClick()
         end
@@ -158,18 +183,32 @@ function CCU:CreateMinimapButton()
         CCU:HandleTeleportButtonPostClick()
     end)
     button:SetScript("OnDragStart", function(self)
+        self.isDragging = true
+        if GameTooltip then
+            GameTooltip:Hide()
+        end
         self:SetScript("OnUpdate", function()
             CCU:UpdateMinimapPositionFromCursor()
         end)
     end)
     button:SetScript("OnDragStop", function(self)
+        self.isDragging = false
         self:SetScript("OnUpdate", nil)
+        CCU:UpdateMinimapButtonPosition()
     end)
     button:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-        GameTooltip:AddLine(CCU.L.MINIMAP_TOOLTIP)
-        GameTooltip:AddLine(CCU.L.MINIMAP_TOOLTIP_ACTION, 1, 1, 1)
-        GameTooltip:AddLine(CCU.L.MINIMAP_TOOLTIP_DRAG, 1, 1, 1)
+        GameTooltip:ClearLines()
+        GameTooltip:AddLine(CCU.MINIMAP_TOOLTIP_TITLE)
+        GameTooltip:AddLine(" ")
+        GameTooltip:AddLine("|cffd9c6ffKeep your teleport cloak flow one click away.|r", 1, 1, 1, true)
+        GameTooltip:AddLine(" ")
+        GameTooltip:AddDoubleLine(CCU.colors.prefix .. "Left-Click|r", CCU.colors.white .. "Equip or use your teleport cloak|r", 1, 1, 1, 1, 1, 1)
+        GameTooltip:AddDoubleLine("|cff4ecdc4Left-Drag|r", CCU.colors.white .. "Move around minimap|r", 1, 1, 1, 1, 1, 1)
+        if self:GetAttribute("type") then
+            GameTooltip:AddLine(" ")
+            GameTooltip:AddLine(CCU.colors.success .. "Teleport macro armed and ready.|r", 1, 1, 1, true)
+        end
         GameTooltip:Show()
     end)
     button:SetScript("OnLeave", function()
@@ -208,18 +247,33 @@ function CCU:ConfigureSecureButtonForBackSlot(cloakID)
     self.secureButton:SetNormalTexture(GetItemIcon(cloakID))
 end
 
+function CCU:TryExecuteTeleportMacro(cloakID)
+    if not cloakID or InCombatLockdown() then
+        return false
+    end
+
+    local macroText = self:BuildTeleportMacro(cloakID, true)
+    if not macroText or type(RunMacroText) ~= "function" then
+        return false
+    end
+
+    local ok = pcall(RunMacroText, macroText)
+    return ok == true
+end
+
 function CCU:UpdateMinimapButtonPosition()
-    if not self.minimapButton then return end
+    if not self.minimapButton or not Minimap then return end
 
     local angle = math.rad((CCUDB and CCUDB.minimapAngle) or self.defaultMinimapAngle)
-    local x = math.cos(angle) * self.minimapRadius
-    local y = math.sin(angle) * self.minimapRadius
+    local minimapRadius = math.max(Minimap:GetWidth() or 140, Minimap:GetHeight() or 140) / 2 + 10
+    local x = math.cos(angle) * minimapRadius
+    local y = math.sin(angle) * minimapRadius
     self.minimapButton:ClearAllPoints()
     self.minimapButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
 end
 
 function CCU:UpdateMinimapPositionFromCursor()
-    if not self.minimapButton or not CCUDB then return end
+    if not self.minimapButton or not CCUDB or not Minimap then return end
 
     local mx, my = Minimap:GetCenter()
     local scale = Minimap:GetEffectiveScale()
@@ -227,7 +281,13 @@ function CCU:UpdateMinimapPositionFromCursor()
     cx = cx / scale
     cy = cy / scale
 
-    local angle = math.deg(math.atan2(cy - my, cx - mx))
+    if not mx or not my then
+        return
+    end
+
+    local dy = cy - my
+    local dx = cx - mx
+    local angle = math.deg((math.atan2 and math.atan2(dy, dx)) or math.atan(dy, dx))
     if angle < 0 then
         angle = angle + 360
     end
@@ -277,18 +337,29 @@ end
 function CCU:RefreshMinimapButton()
     if not self.minimapButton then return end
 
-    local readyCloakID, _, firstOwnedCloakID = self:GetBestUsableCloakID(true)
-    if readyCloakID then
-        self:ConfigureSecureTeleportButton(self.minimapButton, readyCloakID, true)
+    if self.forceDefaultMinimapIcon then
+        self:ClearSecureTeleportButton(self.minimapButton)
+        self.minimapButton.icon:SetTexture("Interface\\AddOns\\CoordinationCloakUtility\\media\\ccu")
+        return
+    end
+
+    local backSlotID = GetInventorySlotInfo("BackSlot")
+    local equippedCloakID = GetInventoryItemID("player", backSlotID)
+    local cloakIcon = "Interface\\AddOns\\CoordinationCloakUtility\\media\\ccu"
+
+    if equippedCloakID and self.usableCloaks[equippedCloakID] then
+        local start, duration = GetItemCooldown(equippedCloakID)
+        if duration == 0 then
+            self:ConfigureSecureTeleportButton(self.minimapButton, equippedCloakID, false)
+        else
+            self:ClearSecureTeleportButton(self.minimapButton)
+        end
+        cloakIcon = GetItemIcon(equippedCloakID) or cloakIcon
     else
         self:ClearSecureTeleportButton(self.minimapButton)
     end
 
-    if firstOwnedCloakID then
-        self.minimapButton.icon:SetTexture("Interface\\AddOns\\CoordinationCloakUtility\\media\\ccu")
-    else
-        self.minimapButton.icon:SetTexture("Interface\\AddOns\\CoordinationCloakUtility\\media\\ccu")
-    end
+    self.minimapButton.icon:SetTexture(cloakIcon)
 end
 
 function CCU:HandleMinimapClick()
@@ -297,7 +368,7 @@ function CCU:HandleMinimapClick()
         return
     end
 
-    self:HandleCloakUse()
+    self:HandleCloakUse("minimap")
     self:RefreshMinimapButton()
 end
 
@@ -418,6 +489,7 @@ function CCU:HandleBackSlotItem()
     local backSlotID = GetInventorySlotInfo("BackSlot")
     local equippedCloakID = GetInventoryItemID("player", backSlotID)
     self.currentCloakID = equippedCloakID
+    self.forceDefaultMinimapIcon = false
 
     -- Update lastNonTeleportationCloakID if a non-teleportation cloak is equipped
     if self.currentCloakID and not self.usableCloaks[self.currentCloakID] then
@@ -449,10 +521,21 @@ function CCU:HandleBackSlotItem()
 
         if duration == 0 then
             -- Cloak is off cooldown, show the button
-            print(self.CCU_PREFIX .. itemLink .. self.L.CLOAK_EQUIPPED)
+            if self.suppressNextEquipMessage then
+                self.suppressNextEquipMessage = false
+            else
+                print(self.CCU_PREFIX .. itemLink .. self.L.CLOAK_EQUIPPED)
+            end
             if not InCombatLockdown() then
-                self:ConfigureSecureButtonForBackSlot(equippedCloakID)
-                self.secureButton:Show()
+                if self.suppressNextPopupButton then
+                    self.suppressNextPopupButton = false
+                    if self.secureButton and self.secureButton:IsShown() then
+                        self.secureButton:Hide()
+                    end
+                else
+                    self:ConfigureSecureButtonForBackSlot(equippedCloakID)
+                    self.secureButton:Show()
+                end
             end
         else
             -- Cloak is on cooldown, hide the button
@@ -482,9 +565,16 @@ function CCU:ResetCloakProcess()
     self.originalCloak = nil -- Ensure originalCloak is reset
     self.reEquipAttempted = false
     self.reEquipStartTime = nil
+    self.waitingToReequip = false
+    self.forceDefaultMinimapIcon = true
+    if self.reEquipTimer then
+        self.reEquipTimer:Cancel()
+        self.reEquipTimer = nil
+    end
     if not InCombatLockdown() and self.secureButton and self.secureButton:IsShown() then  -- Check if secureButton exists
         self.secureButton:Hide()
     end
+    self:RefreshMinimapButton()
     print(self.CCU_PREFIX .. self.L.PROCESS_RESET)
     -- Call HandleBackSlotItem to re-evaluate current cloak state
     self:HandleBackSlotItem()
@@ -507,6 +597,10 @@ end
 
 -- Function to check for teleportation and re-equip the original cloak
 function CCU:CheckTeleportAndReequip()
+    if not IsPlayerInWorld() then
+        return
+    end
+
     local currentTime = GetTime()
     local elapsed = currentTime - (self.reEquipStartTime or 0)
 
@@ -595,8 +689,8 @@ function CCU:GetAvailableCloakID()
     return cloakID, itemLink
 end
 
--- Function to equip and prepare the teleportation cloak
-function CCU:EquipAndUseCloak(cloakID, cloakLink)
+-- Function to equip and attempt to use the teleportation cloak immediately
+function CCU:EquipAndUseCloak(cloakID, cloakLink, source)
     if self.inCombat then
         self:NotifyCombatLockdown()
         return
@@ -627,16 +721,44 @@ function CCU:EquipAndUseCloak(cloakID, cloakLink)
         print(self.CCU_PREFIX .. self.L.ORIGINAL_CLOAK_SAVED .. "No cloak equipped.") -- This might still happen if the original cloak is not yet initialized
     end
 
-    if equippedCloakID == cloakID then
-        print(self.CCU_PREFIX .. self.L.CLOAK_ALREADY_EQUIPPED)
-    else
-        EquipItemByName(cloakID)
+    if source == "minimap" then
+        if equippedCloakID == cloakID then
+            print(self.CCU_PREFIX .. self.L.CLOAK_ALREADY_EQUIPPED)
+        else
+            self.suppressNextEquipMessage = true
+            self.suppressNextPopupButton = true
+            EquipItemByName(cloakID)
+            print(self.CCU_PREFIX .. cloakLink .. self.L.CLOAK_EQUIPPED)
+        end
+        if not InCombatLockdown() and self.secureButton and self.secureButton:IsShown() then
+            self.secureButton:Hide()
+        end
+        C_Timer.After(0.1, function()
+            self:RefreshMinimapButton()
+        end)
+        return
     end
 
-    -- Set up and show the secure button
+    local usedDirectly = false
     if not InCombatLockdown() then
-        self:ConfigureSecureButtonForBackSlot(cloakID)
-        self.secureButton:Show()
+        if equippedCloakID == cloakID then
+            print(self.CCU_PREFIX .. self.L.CLOAK_ALREADY_EQUIPPED)
+            usedDirectly = self:TryExecuteTeleportMacro(cloakID)
+        else
+            usedDirectly = self:TryExecuteTeleportMacro(cloakID)
+            if not usedDirectly then
+                self.suppressNextEquipMessage = true
+                EquipItemByName(cloakID)
+            end
+        end
+
+        if usedDirectly then
+            self.teleportInProgress = true
+            print(self.CCU_PREFIX .. self.L.TELEPORTATION_IN_PROGRESS)
+        else
+            self:ConfigureSecureButtonForBackSlot(cloakID)
+            self.secureButton:Show()
+        end
     end
 end
 
@@ -645,7 +767,7 @@ end
 -- =====================================================================================
 
 -- Handler for the /ccu command
-function CCU:HandleCloakUse()
+function CCU:HandleCloakUse(source)
     if self.inCombat then
         self:NotifyCombatLockdown()
         return
@@ -673,7 +795,7 @@ function CCU:HandleCloakUse()
     -- Get an available cloak
     local cloakID, cloakLink = self:GetAvailableCloakID()
     if cloakID then
-        self:EquipAndUseCloak(cloakID, cloakLink)
+        self:EquipAndUseCloak(cloakID, cloakLink, source)
     end
 end
 
@@ -687,7 +809,7 @@ function CCU:HandleSlashCommands(input)
     end
 
     if input == "" then
-        self:HandleCloakUse()
+        self:HandleCloakUse("slash")
     elseif input == "welcome" then
         self:ToggleWelcomeMessage()
     elseif input == "help" then
@@ -740,7 +862,8 @@ CCU.events = {
 
         if self.waitingToReequip and self.teleportInProgress then
             -- Delay the re-equip to avoid load screen issues
-            C_Timer.After(5, function() self:ReequipOriginalCloak() end)
+            self.reEquipStartTime = GetTime()
+            C_Timer.After(7, function() self:ReequipOriginalCloak() end)
         end
     end,
 
