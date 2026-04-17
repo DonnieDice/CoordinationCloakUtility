@@ -1,4 +1,4 @@
-# <img src="media/ccu_logo.png" width="25" height="25"> <span style="color:#8b0941">C</span><span style="color:#8b0941">C</span><span style="color:#8b0941">U</span> <span style="color:#3598db">|</span> <span style="color:#8b0941">Coordination Cloak Utility</span>
+# <img src="media/ccu_logo.png" width="25" height="25"> <span style="color:#8b0941">C</span><span style="color:#8b0941">C</span><span style="color:#8b0941">U</span> <span style="color:#fff">|</span> <span style="color:#8b0941">Coordination Cloak Utility</span>
 ## <img src="https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif" height="20"> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#3598db">-</span> [<span style="color:#8B1538">R</span><span style="color:#7598b6">ealm</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span>](https://realmgx.com) <span style="color:#8b0941">Community Project</span>
 
 <div align="center">
@@ -42,7 +42,7 @@
 
 ## <span style="color:#8b0941">🪄 What is CCU?</span>
 
-**<span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#3598db">|</span> <span style="color:#8b0941">CCU</span>** <span style="color:#e67e23">keeps teleport cloak usage simple. Type</span> ` /ccu ` <span style="color:#e67e23">to show the popup use button, or click the minimap icon to run the same cloak-selection flow without typing first.</span>
+**<span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#fff">|</span> <span style="color:#8b0941">CCU</span>** <span style="color:#e67e23">keeps teleport cloak usage simple. Type</span> ` /ccu ` <span style="color:#e67e23">to show the popup use button, or click the minimap icon to run the same cloak-selection flow without typing first.</span>
 
 ### <span style="color:#8b0941">🔥 Why Choose CCU?</span>
 - **<span style="color:#2dc26b">Smart Cloak Detection</span>** <span style="color:#e67e23">finds supported teleport cloaks in your bags automatically</span>
