@@ -53,6 +53,7 @@
 
 ---
 
+<a id="features"></a>
 ## <span style="color:#8b0941">✨ Features</span>
 
 <div align="center">
@@ -69,7 +70,7 @@
 
 </div>
 
-### <span style="color:#8b0941">🗺️ Supported Teleportation Cloaks</span>
+## <span style="color:#8b0941">🗺️ Supported Teleportation Cloaks</span>
 
 <div align="center">
 
@@ -83,6 +84,7 @@
 
 ---
 
+<a id="quick-start"></a>
 ## <span style="color:#8b0941">🚀 Quick Start</span>
 
 1. **<span style="color:#2dc26b">Install</span>** <span style="color:#e67e23">CCU from your preferred addon site</span>
@@ -93,6 +95,7 @@
 
 ---
 
+<a id="command-reference"></a>
 ## <span style="color:#8b0941">📋 Command Reference</span>
 
 <span style="color:#e67e23">Use</span> <span style="color:#2dc26b">`/ccu`</span> <span style="color:#e67e23">followed by</span><span style="color:#3598db">:</span>
@@ -109,6 +112,7 @@
 
 ---
 
+<a id="compatibility"></a>
 ## <span style="color:#8b0941">📋 Compatibility</span>
 
 <div align="center">
@@ -122,6 +126,7 @@
 
 ---
 
+<a id="installation"></a>
 ## <span style="color:#8b0941">📥 Installation</span>
 
 1. **<span style="color:#2dc26b">Download</span>** <span style="color:#e67e23">from your preferred platform</span><span style="color:#3598db">:</span>
@@ -139,14 +144,12 @@
 
 ## <span style="color:#8b0941">🆕 What's New</span>
 
-<details>
-<summary><strong><span style="color:#8b0941">v3.5.0 - Feature Release</span></strong></summary>
+<span style="color:#8b0941">v3.5.0 - Feature Release</span>
 
 - <span style="color:#2dc26b">Added</span> <span style="color:#e67e23">a movable minimap icon using the CCU logo so you can trigger the cloak flow without typing `/ccu` first</span>
 - <span style="color:#4ecdc4">Kept</span> <span style="color:#e67e23">`/ccu` as the popup-button path while sharing the secure teleport setup between the popup and minimap controls</span>
 - <span style="color:#8b0941">Updated</span> <span style="color:#e67e23">CCU branding to the `#8b0941` color and moved local addon art into `media/` with the new `ccu.tga` minimap asset</span>
 
-</details>
 
 _<span style="color:#e67e23">See</span> [<span style="color:#8b0941">docs/CHANGES.md</span>](./docs/CHANGES.md) <span style="color:#e67e23">for release history.</span>_
 
@@ -169,6 +172,7 @@ _<span style="color:#e67e23">See</span> [<span style="color:#8b0941">docs/CHANGE
 
 ---
 
+<a id="support"></a>
 ## <span style="color:#8b0941">💖 Support</span>
 
 <div align="center">
