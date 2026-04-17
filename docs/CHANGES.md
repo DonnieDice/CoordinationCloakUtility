@@ -1,3 +1,4 @@
-# Version 3.5.1
-- Continued iterating on the CCU minimap button so the icon art, hover tooltip branding, and minimap drag/placement behavior better match the intended two-step cloak flow.
-- Kept `/ccu` on the stable popup-button flow while preserving the minimap button's separate two-step equip-then-teleport behavior.
+# Version 3.6.0
+- Added `/ccu icon on|off` slash command to show or hide the minimap icon.
+- Added Ctrl+Right-click on the minimap icon to hide it (use `/ccu icon on` to show again).
+- Updated minimap tooltip to show the new hide option.

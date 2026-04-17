@@ -71,35 +71,39 @@ CCU.MINIMAP_TOOLTIP_TITLE = CCU.MINIMAP_TOOLTIP_ICON .. CCU.colors.prefix .. "Co
 -- =====================================================================================
 
 CCU.L = {
-    WELCOME_MSG = CCU.colors.white .. "Welcome! Use " .. CCU.colors.prefix .. "/ccu help|r for commands.",
-    VERSION = CCU.colors.info .. "Version: |r",
-    ORIGINAL_CLOAK_SAVED = CCU.colors.info .. "Original cloak saved: |r",
-    CLOAK_EQUIPPED = CCU.colors.success .. " equipped. " .. CCU.colors.info .. "Click the button to use it.|r",
-    CLOAK_ALREADY_EQUIPPED = CCU.colors.info .. "Cloak is already equipped. Ready to use.|r",
-    FAILED_EQUIP = CCU.colors.error .. "Failed to equip the cloak. Retrying...|r",
-    SUCCESS_EQUIP = CCU.colors.success .. "Cloak successfully equipped after retry.|r",
-    FINAL_FAILED_EQUIP = CCU.colors.error .. "Failed to equip the cloak after retrying. Please try manually.|r",
-    REEQUIP_CLOAK = CCU.colors.success .. "Re-equipping original cloak now: |r",
-    REEQUIP_SUCCESS = CCU.colors.success .. "Successfully re-equipped original cloak: |r",
-    REEQUIP_FAILED = CCU.colors.error .. "Failed to re-equip original cloak within the timeout period. Please check your inventory.|r",
-    NO_CLOAK_REEQUIP = CCU.colors.error .. "No original cloak to re-equip.|r",
-    HELP_COMMAND = CCU.colors.info .. "Available commands:",
-    HELP_OPTION_PANEL = " " .. CCU.colors.prefix .. "/ccu|r - Trigger the cloak utility.",
-    HELP_WELCOME = " " .. CCU.colors.prefix .. "/ccu welcome|r - Toggles the welcome message on/off.",
-    HELP_HELP = " " .. CCU.colors.prefix .. "/ccu help|r - Displays this help message.",
-    UNKNOWN_COMMAND = CCU.colors.warning .. "Unknown command. Type " .. CCU.colors.prefix .. "/ccu help|r for a list of commands.",
-    CLOAK_ON_CD = CCU.colors.error .. "%s is on cooldown: %s" .. CCU.colors.info .. " remaining.|r",
-    NO_USABLE_CLOAK = CCU.colors.error .. "No usable teleportation cloak found or all are on cooldown.|r",
-    COMBAT_ACTIVE = CCU.colors.error .. "Combat is active. Please try again after leaving combat.|r",
-    WELCOME_MSG_ENABLED = CCU.colors.success .. "Welcome message enabled.|r",
-    WELCOME_MSG_DISABLED = CCU.colors.error .. "Welcome message disabled.|r",
-    TELEPORTATION_IN_PROGRESS = CCU.colors.success .. "Teleportation in progress.|r",
-    CLOAK_UNEQUIPPED = CCU.colors.info .. "Teleportation cloak unequipped.|r",
-    HIDING_BUTTON = CCU.colors.info .. "Hiding button.|r",
-    PROCESS_RESET = CCU.colors.info .. "Cloak usage process reset.|r",
-    MINIMAP_TOOLTIP = CCU.colors.prefix .. "Coordination Cloak Utility|r",
-    MINIMAP_TOOLTIP_ACTION = CCU.colors.info .. "Left-click|r to equip or use your teleport cloak.|r",
-    MINIMAP_TOOLTIP_DRAG = CCU.colors.info .. "Right-drag|r to move the minimap icon.|r",
+	WELCOME_MSG = CCU.colors.white .. "Welcome! Use " .. CCU.colors.prefix .. "/ccu help|r for commands.",
+	VERSION = CCU.colors.info .. "Version: |r",
+	ORIGINAL_CLOAK_SAVED = CCU.colors.info .. "Original cloak saved: |r",
+	CLOAK_EQUIPPED = CCU.colors.success .. " equipped. " .. CCU.colors.info .. "Click the button to use it.|r",
+	CLOAK_ALREADY_EQUIPPED = CCU.colors.info .. "Cloak is already equipped. Ready to use.|r",
+	FAILED_EQUIP = CCU.colors.error .. "Failed to equip the cloak. Retrying...|r",
+	SUCCESS_EQUIP = CCU.colors.success .. "Cloak successfully equipped after retry.|r",
+	FINAL_FAILED_EQUIP = CCU.colors.error .. "Failed to equip the cloak after retrying. Please try manually.|r",
+	REEQUIP_CLOAK = CCU.colors.success .. "Re-equipping original cloak now: |r",
+	REEQUIP_SUCCESS = CCU.colors.success .. "Successfully re-equipped original cloak: |r",
+	REEQUIP_FAILED = CCU.colors.error .. "Failed to re-equip original cloak within the timeout period. Please check your inventory.|r",
+	NO_CLOAK_REEQUIP = CCU.colors.error .. "No original cloak to re-equip.|r",
+	HELP_COMMAND = CCU.colors.info .. "Available commands:",
+	HELP_OPTION_PANEL = " " .. CCU.colors.prefix .. "/ccu|r - Trigger the cloak utility.",
+	HELP_WELCOME = " " .. CCU.colors.prefix .. "/ccu welcome|r - Toggles the welcome message on/off.",
+	HELP_ICON = " " .. CCU.colors.prefix .. "/ccu icon on|r or " .. CCU.colors.prefix .. "off|r - Show/hide minimap icon.",
+	HELP_HELP = " " .. CCU.colors.prefix .. "/ccu help|r - Displays this help message.",
+	UNKNOWN_COMMAND = CCU.colors.warning .. "Unknown command. Type " .. CCU.colors.prefix .. "/ccu help|r for a list of commands.",
+	CLOAK_ON_CD = CCU.colors.error .. "%s is on cooldown: %s" .. CCU.colors.info .. " remaining.|r",
+	NO_USABLE_CLOAK = CCU.colors.error .. "No usable teleportation cloak found or all are on cooldown.|r",
+	COMBAT_ACTIVE = CCU.colors.error .. "Combat is active. Please try again after leaving combat.|r",
+	WELCOME_MSG_ENABLED = CCU.colors.success .. "Welcome message enabled.|r",
+	WELCOME_MSG_DISABLED = CCU.colors.error .. "Welcome message disabled.|r",
+	TELEPORTATION_IN_PROGRESS = CCU.colors.success .. "Teleportation in progress.|r",
+	CLOAK_UNEQUIPPED = CCU.colors.info .. "Teleportation cloak unequipped.|r",
+	HIDING_BUTTON = CCU.colors.info .. "Hiding button.|r",
+	PROCESS_RESET = CCU.colors.info .. "Cloak usage process reset.|r",
+	MINIMAP_TOOLTIP = CCU.colors.prefix .. "Coordination Cloak Utility|r",
+	MINIMAP_TOOLTIP_ACTION = CCU.colors.info .. "Left-click|r to equip or use your teleport cloak.|r",
+	MINIMAP_TOOLTIP_DRAG = CCU.colors.info .. "Left-drag|r to move the minimap icon.|r",
+	MINIMAP_TOOLTIP_HIDE = CCU.colors.info .. "Ctrl+Right-click|r to hide the minimap icon.|r",
+	MINIMAP_ICON_HIDDEN = CCU.colors.success .. "Minimap icon hidden. Use |r" .. CCU.colors.prefix .. "/ccu icon on|r" .. CCU.colors.success .. " to show it again.|r",
+	MINIMAP_ICON_SHOWN = CCU.colors.success .. "Minimap icon shown.|r",
 }
 
 -- Note: VersionNumber will be initialized after ADDON_LOADED event to avoid errors
@@ -196,24 +200,40 @@ function CCU:CreateMinimapButton()
         self:SetScript("OnUpdate", nil)
         CCU:UpdateMinimapButtonPosition()
     end)
-    button:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-        GameTooltip:ClearLines()
-        GameTooltip:AddLine(CCU.MINIMAP_TOOLTIP_TITLE)
-        GameTooltip:AddLine(" ")
-        GameTooltip:AddLine("|cffd9c6ffKeep your teleport cloak flow one click away.|r", 1, 1, 1, true)
-        GameTooltip:AddLine(" ")
-        GameTooltip:AddDoubleLine(CCU.colors.prefix .. "Left-Click|r", CCU.colors.white .. "Equip or use your teleport cloak|r", 1, 1, 1, 1, 1, 1)
-        GameTooltip:AddDoubleLine("|cff4ecdc4Left-Drag|r", CCU.colors.white .. "Move around minimap|r", 1, 1, 1, 1, 1, 1)
-        if self:GetAttribute("type") then
-            GameTooltip:AddLine(" ")
-            GameTooltip:AddLine(CCU.colors.success .. "Teleport macro armed and ready.|r", 1, 1, 1, true)
-        end
-        GameTooltip:Show()
-    end)
-    button:SetScript("OnLeave", function()
-        GameTooltip:Hide()
-    end)
+	button:SetScript("OnEnter", function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+		GameTooltip:ClearLines()
+		GameTooltip:AddLine(CCU.MINIMAP_TOOLTIP_TITLE)
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine("|cffd9c6ffKeep your teleport cloak flow one click away.|r", 1, 1, 1, true)
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddDoubleLine(CCU.colors.prefix .. "Left-Click|r", CCU.colors.white .. "Equip or use your teleport cloak|r", 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine("|cff4ecdc4Left-Drag|r", CCU.colors.white .. "Move around minimap|r", 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine("|cffe74c3cCtrl+Right-Click|r", CCU.colors.white .. "Hide minimap icon|r", 1, 1, 1, 1, 1, 1)
+		if self:GetAttribute("type") then
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(CCU.colors.success .. "Teleport macro armed and ready.|r", 1, 1, 1, true)
+		end
+		GameTooltip:Show()
+	end)
+	button:SetScript("OnLeave", function()
+		GameTooltip:Hide()
+	end)
+
+	-- Handle Ctrl+Right-click to hide the minimap icon
+	button:SetScript("OnMouseDown", function(self, mouseButton)
+		if mouseButton == "RightButton" and IsControlKeyDown() then
+			self.isCtrlRightClick = true
+		end
+	end)
+
+	button:SetScript("OnMouseUp", function(self, mouseButton)
+		if mouseButton == "RightButton" and self.isCtrlRightClick and IsControlKeyDown() then
+			self.isCtrlRightClick = false
+			GameTooltip:Hide()
+			CCU:ToggleMinimapIcon(false)
+		end
+	end)
 end
 
 function CCU:BuildTeleportMacro(cloakID, includeEquip)
@@ -462,17 +482,35 @@ end
 
 -- Function to toggle the welcome message
 function CCU:ToggleWelcomeMessage()
-    CCUDB.showWelcomeMessage = not CCUDB.showWelcomeMessage
-    local status = CCUDB.showWelcomeMessage and self.L.WELCOME_MSG_ENABLED or self.L.WELCOME_MSG_DISABLED
-    print(self.CCU_PREFIX .. status)
+	CCUDB.showWelcomeMessage = not CCUDB.showWelcomeMessage
+	local status = CCUDB.showWelcomeMessage and self.L.WELCOME_MSG_ENABLED or self.L.WELCOME_MSG_DISABLED
+	print(self.CCU_PREFIX .. status)
+end
+
+-- Function to toggle the minimap icon
+function CCU:ToggleMinimapIcon(show)
+	CCUDB.minimapIconEnabled = show
+	if show then
+		if self.minimapButton then
+			self.minimapButton:Show()
+			self:UpdateMinimapButtonPosition()
+		end
+		print(self.CCU_PREFIX .. self.L.MINIMAP_ICON_SHOWN)
+	else
+		if self.minimapButton then
+			self.minimapButton:Hide()
+		end
+		print(self.CCU_PREFIX .. self.L.MINIMAP_ICON_HIDDEN)
+	end
 end
 
 -- Function to display the help message
 function CCU:DisplayHelp()
-    print(self.CCU_PREFIX .. self.L.HELP_COMMAND)
-    print(self.CCU_PREFIX .. self.L.HELP_OPTION_PANEL)
-    print(self.CCU_PREFIX .. self.L.HELP_WELCOME)
-    print(self.CCU_PREFIX .. self.L.HELP_HELP)
+	print(self.CCU_PREFIX .. self.L.HELP_COMMAND)
+	print(self.CCU_PREFIX .. self.L.HELP_OPTION_PANEL)
+	print(self.CCU_PREFIX .. self.L.HELP_WELCOME)
+	print(self.CCU_PREFIX .. self.L.HELP_ICON)
+	print(self.CCU_PREFIX .. self.L.HELP_HELP)
 end
 
 -- Function to handle changes in the back slot (cloak slot)
@@ -801,22 +839,28 @@ end
 
 -- Function to handle slash commands
 function CCU:HandleSlashCommands(input)
-    input = input:trim():lower()
+	input = input:trim():lower()
 
-    if self.inCombat then
-        self:NotifyCombatLockdown()
-        return
-    end
+	if self.inCombat then
+		self:NotifyCombatLockdown()
+		return
+	end
 
-    if input == "" then
-        self:HandleCloakUse("slash")
-    elseif input == "welcome" then
-        self:ToggleWelcomeMessage()
-    elseif input == "help" then
-        self:DisplayHelp()
-    else
-        print(self.CCU_PREFIX .. self.L.UNKNOWN_COMMAND)
-    end
+	if input == "" then
+		self:HandleCloakUse("slash")
+	elseif input == "welcome" then
+		self:ToggleWelcomeMessage()
+	elseif input == "icon" then
+		self:DisplayHelp()
+	elseif input == "icon on" then
+		self:ToggleMinimapIcon(true)
+	elseif input == "icon off" then
+		self:ToggleMinimapIcon(false)
+	elseif input == "help" then
+		self:DisplayHelp()
+	else
+		print(self.CCU_PREFIX .. self.L.UNKNOWN_COMMAND)
+	end
 end
 
 -- =====================================================================================
@@ -833,27 +877,35 @@ CCU.events = {
         end
     end,
 
-    PLAYER_LOGIN = function(self)
-        SLASH_CCU1 = "/ccu"
-        SlashCmdList["CCU"] = function(input) self:HandleSlashCommands(input) end
+	PLAYER_LOGIN = function(self)
+		SLASH_CCU1 = "/ccu"
+		SlashCmdList["CCU"] = function(input) self:HandleSlashCommands(input) end
 
-        -- Initialize Database
-        CCUDB = CCUDB or {}
-        CCUDB.showWelcomeMessage = CCUDB.showWelcomeMessage ~= nil and CCUDB.showWelcomeMessage or true
-        CCUDB.minimapAngle = CCUDB.minimapAngle or self.defaultMinimapAngle
+		-- Initialize Database
+		CCUDB = CCUDB or {}
+		CCUDB.showWelcomeMessage = CCUDB.showWelcomeMessage ~= nil and CCUDB.showWelcomeMessage or true
+		CCUDB.minimapAngle = CCUDB.minimapAngle or self.defaultMinimapAngle
+		CCUDB.minimapIconEnabled = CCUDB.minimapIconEnabled ~= nil and CCUDB.minimapIconEnabled or true
 
-        self:UpdateMinimapButtonPosition()
-        self:RefreshMinimapButton()
+		-- Apply minimap icon visibility setting
+		if not CCUDB.minimapIconEnabled then
+			if self.minimapButton then
+				self.minimapButton:Hide()
+			end
+		else
+			self:UpdateMinimapButtonPosition()
+			self:RefreshMinimapButton()
+		end
 
-        if CCUDB.showWelcomeMessage then
-            print(self.CCU_PREFIX .. self.L.WELCOME_MSG)
-            print(self.CCU_PREFIX .. self.L.VERSION .. self.VersionNumber)
-        end
+		if CCUDB.showWelcomeMessage then
+			print(self.CCU_PREFIX .. self.L.WELCOME_MSG)
+			print(self.CCU_PREFIX .. self.L.VERSION .. self.VersionNumber)
+		end
 
-        C_Timer.After(1, function()  -- Delay the cloak handling to give time for initialization
-            self:HandleBackSlotItem()
-        end)
-    end,
+		C_Timer.After(1, function() -- Delay the cloak handling to give time for initialization
+			self:HandleBackSlotItem()
+		end)
+	end,
 
     PLAYER_ENTERING_WORLD = function(self)
         self:InitializeCloaks()

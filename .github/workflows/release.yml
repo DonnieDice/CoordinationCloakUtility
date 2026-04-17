@@ -1,9 +1,31 @@
 name: Package and Release
-
 on:
   push:
     tags:
-      - 'v*'  # Triggers only on version tags like v1.0.0, v1.0.0-alpha, etc.
+      - 'v*'
+    branches:
+      - alpha
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: Release channel to publish/notify
+        required: true
+        default: release
+        type: choice
+        options:
+          - release
+          - beta
+          - alpha
+      tag_name:
+        description: Tag name to use in release links and notifications
+        required: false
+        default: v3.6.0
+        type: string
+
+permissions:
+  contents: write
 
 env:
   CF_API_KEY: ${{ secrets.CF_API_KEY }}
@@ -14,114 +36,117 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
+      - name: Determine Release Type
+        id: set_release_type
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "release_type=${{ inputs.release_type }}" >> $GITHUB_OUTPUT
+            echo "tag_name=${{ inputs.tag_name }}" >> $GITHUB_OUTPUT
+            if [[ -n "${{ inputs.tag_name }}" ]]; then
+              echo "checkout_ref=${{ inputs.tag_name }}" >> $GITHUB_OUTPUT
+            else
+              echo "checkout_ref=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            fi
+          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            TAG_NAME="${{ github.ref_name }}"
+            echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+            echo "checkout_ref=$TAG_NAME" >> $GITHUB_OUTPUT
+            if [[ "$TAG_NAME" == *"beta"* ]]; then
+              echo "release_type=beta" >> $GITHUB_OUTPUT
+            elif [[ "$TAG_NAME" == *"alpha"* ]]; then
+              echo "release_type=alpha" >> $GITHUB_OUTPUT
+            else
+              echo "release_type=release" >> $GITHUB_OUTPUT
+            fi
+          elif [[ "${{ github.ref }}" == "refs/heads/alpha" ]]; then
+            echo "release_type=alpha" >> $GITHUB_OUTPUT
+            echo "tag_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "checkout_ref=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "release_type=none" >> $GITHUB_OUTPUT
+            echo "tag_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "checkout_ref=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Clone Project
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ steps.set_release_type.outputs.checkout_ref }}
 
       - name: Configure Git user
         run: |
           git config --global user.name "donniedice"
           git config --global user.email "donniedice@protonmail.com"
 
-      - name: Set Release Type
-        id: set_release_type
-        run: |
-          TAG_NAME=${{ github.ref }}
-          if [[ "$TAG_NAME" == *"beta"* ]]; then
-            echo "release_type=beta" >> $GITHUB_OUTPUT
-          elif [[ "$TAG_NAME" == *"alpha"* ]]; then
-            echo "release_type=alpha" >> $GITHUB_OUTPUT
-          else
-            echo "release_type=release" >> $GITHUB_OUTPUT
-          fi
-
       - name: Extract Version from TOC
         id: extract_version
         run: |
-          # Try to get version from TOC file, fallback to tag name
           if [ -f "CoordinationCloakUtility.toc" ]; then
-            version=$(grep -E "^## Version:" CoordinationCloakUtility.toc | awk '{print $3}')
-            if [ -z "$version" ]; then
-              version="${{ github.ref_name }}"
-            fi
+            version=$(grep -oP '^## Version: \K(.*)' CoordinationCloakUtility.toc || echo "unknown")
           else
             version="${{ github.ref_name }}"
           fi
-          echo "Extracted version: $version"
           echo "version=$version" >> $GITHUB_OUTPUT
+          echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%S.000Z)" >> $GITHUB_OUTPUT
 
       - name: Extract Changelog
         id: extract_changelog
         run: |
           if [ -f "docs/CHANGES.md" ]; then
-            # Read the changelog and properly escape it for JSON
-            CHANGELOG=$(cat docs/CHANGES.md | head -20 | jq -Rs .)
-            echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
+            CHANGELOG=$(awk '
+              /^# / {
+                if (in_section) {
+                  exit
+                }
+                in_section=1
+                next
+              }
+              in_section {
+                print
+              }
+            ' docs/CHANGES.md | sed '/./,$!d' | jq -Rs '.')
+            CHANGELOG=${CHANGELOG:1:-1}
+            echo "changelog<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGELOG" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
           else
-            echo "changelog=\"No changelog available\"" >> $GITHUB_OUTPUT
+            echo "changelog=Check the commit history for changes" >> $GITHUB_OUTPUT
           fi
 
-      - name: Package and Release
+      - name: Package Addon
         uses: BigWigsMods/packager@master
-        with:
-          'release-type': ${{ steps.set_release_type.outputs.release_type }}
+        if: steps.set_release_type.outputs.release_type != 'none'
 
-      - name: Send Discord Notification
-        if: success()
+      - name: Send Discord Release Notification
+        if: success() && steps.set_release_type.outputs.release_type == 'release'
+        uses: actions/github-script@v7
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: |
-          if [ -z "$DISCORD_WEBHOOK" ]; then
-            echo "Discord webhook not configured, skipping notification"
-            exit 0
-          fi
-          
-          # Determine release type emoji and color
-          RELEASE_TYPE="${{ steps.set_release_type.outputs.release_type }}"
-          if [ "$RELEASE_TYPE" = "alpha" ]; then
-            EMOJI="🔬"
-            TYPE_TEXT=" Alpha"
-            COLOR=16711680
-          elif [ "$RELEASE_TYPE" = "beta" ]; then
-            EMOJI="🧪"
-            TYPE_TEXT=" Beta"
-            COLOR=16744448
-          else
-            EMOJI="💞"
-            TYPE_TEXT=""
-            COLOR=9830721
-          fi
-          
-          # Get version - use tag name as fallback
-          VERSION="${{ steps.extract_version.outputs.version }}"
-          if [ -z "$VERSION" ]; then
-            VERSION="${{ github.ref_name }}"
-          fi
-          
-          # Get the changelog (already JSON-escaped from previous step)
-          CHANGELOG='${{ steps.extract_changelog.outputs.changelog }}'
-          
-          # Build the JSON payload using jq for proper escaping
-          JSON_PAYLOAD=$(jq -n \
-            --arg emoji "$EMOJI" \
-            --arg type_text "$TYPE_TEXT" \
-            --arg version "$VERSION" \
-            --arg tag "${{ github.ref_name }}" \
-            --argjson changelog "$CHANGELOG" \
-            --argjson color "$COLOR" \
-            '{
-              "content": "",
+          VERSION: ${{ steps.extract_version.outputs.version }}
+          TAG_NAME: ${{ steps.set_release_type.outputs.tag_name }}
+          TIMESTAMP: ${{ steps.extract_version.outputs.timestamp }}
+          CHANGELOG: ${{ steps.extract_changelog.outputs.changelog }}
+        with:
+          script: |
+            if (!process.env.DISCORD_WEBHOOK) {
+              throw new Error('DISCORD_WEBHOOK secret is not configured.');
+            }
+            let changelog = process.env.CHANGELOG || 'Check the commit history for changes';
+            changelog = changelog.replace(/\\n/g, '\n');
+            if (changelog.length > 3500) {
+              changelog = changelog.slice(0, 3497) + '...';
+            }
+
+            const payload = {
               "username": "CCU Release",
               "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png",
               "embeds": [{
-                "title": "\($emoji) CCU | Coordination Cloak Utility - \($version)\($type_text)",
-                "description": "**Teleport with ease!** A new version of CCU has been released!\n\n🎵 **What'\''s New:**\n\($changelog)\n\n**Coordinate with your party using the Coordination Cloak!**",
-                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/releases/tag/\($tag)",
-                "color": $color,
+                "title": "💞 CCU | Coordination Cloak Utility - " + process.env.VERSION,
+                "description": "**Teleport with ease!** A new version of CCU has been released!\n\n🎵 **What's New:**\n" + changelog + "\n\n**Coordinate with your party using the Coordination Cloak!**",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/releases/tag/" + process.env.TAG_NAME,
+                "color": 9830721,
                 "thumbnail": {
                   "url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png"
                 },
@@ -146,67 +171,188 @@ jobs:
                   "text": "RGX Mods - RealmGX Community",
                   "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
                 },
-                "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'"
+                "timestamp": process.env.TIMESTAMP
               }]
-            }')
-          
-          echo "Sending Discord notification..."
-          echo "Version: $VERSION"
-          
-          # Send to Discord
-          curl -H "Content-Type: application/json" \
-               -X POST \
-               -d "$JSON_PAYLOAD" \
-               "$DISCORD_WEBHOOK"
+            };
+            const response = await fetch(process.env.DISCORD_WEBHOOK, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+            });
+            const responseText = await response.text();
+            if (!response.ok) {
+              throw new Error(`Discord notification failed: ${response.status} ${response.statusText} ${responseText}`);
+            }
+            console.log(`Discord notification sent. Status: ${response.status}`);
+
+      - name: Send Discord Beta Notification
+        if: success() && steps.set_release_type.outputs.release_type == 'beta'
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          VERSION: ${{ steps.extract_version.outputs.version }}
+          TAG_NAME: ${{ steps.set_release_type.outputs.tag_name }}
+          TIMESTAMP: ${{ steps.extract_version.outputs.timestamp }}
+          CHANGELOG: ${{ steps.extract_changelog.outputs.changelog }}
+        with:
+          script: |
+            if (!process.env.DISCORD_WEBHOOK) {
+              throw new Error('DISCORD_WEBHOOK secret is not configured.');
+            }
+            let changelog = process.env.CHANGELOG || 'Check the commit history for changes';
+            changelog = changelog.replace(/\\n/g, '\n');
+            if (changelog.length > 3500) {
+              changelog = changelog.slice(0, 3497) + '...';
+            }
+
+            const payload = {
+              "username": "CCU Beta",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png",
+              "embeds": [{
+                "title": "🧪 CCU Beta - " + process.env.VERSION,
+                "description": "**Teleport with ease!** A beta build of CCU is ready for testing!\n\n🎵 **What's New:**\n" + changelog,
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/releases/tag/" + process.env.TAG_NAME,
+                "color": 16744448,
+                "thumbnail": {
+                  "url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png"
+                },
+                "fields": [
+                  {
+                    "name": "📥 Download Beta",
+                    "value": "[CurseForge](https://www.curseforge.com/wow/addons/ccu-coordination-cloak-utility)\n[Wago.io](https://addons.wago.io/addons/coordinationcloakutility)\n[GitHub](https://github.com/DonnieDice/CoordinationCloakUtility/releases)",
+                    "inline": true
+                  },
+                  {
+                    "name": "💬 Support",
+                    "value": "[Join Discord](https://discord.gg/N7kdKAHVVF)\n[Report Issues](https://github.com/DonnieDice/CoordinationCloakUtility/issues)",
+                    "inline": true
+                  }
+                ],
+                "footer": {
+                  "text": "RGX Mods - RealmGX Community",
+                  "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
+                },
+                "timestamp": process.env.TIMESTAMP
+              }]
+            };
+            const response = await fetch(process.env.DISCORD_WEBHOOK, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+            });
+            const responseText = await response.text();
+            if (!response.ok) {
+              throw new Error(`Discord notification failed: ${response.status} ${response.statusText} ${responseText}`);
+            }
+            console.log(`Discord notification sent. Status: ${response.status}`);
+
+      - name: Send Discord Alpha Notification
+        if: success() && steps.set_release_type.outputs.release_type == 'alpha'
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          VERSION: ${{ steps.extract_version.outputs.version }}
+          TIMESTAMP: ${{ steps.extract_version.outputs.timestamp }}
+          CHANGELOG: ${{ steps.extract_changelog.outputs.changelog }}
+        with:
+          script: |
+            if (!process.env.DISCORD_WEBHOOK) {
+              throw new Error('DISCORD_WEBHOOK secret is not configured.');
+            }
+            let changelog = process.env.CHANGELOG || 'Check the commit history for changes';
+            changelog = changelog.replace(/\\n/g, '\n');
+            if (changelog.length > 3500) {
+              changelog = changelog.slice(0, 3497) + '...';
+            }
+
+            const payload = {
+              "username": "CCU Alpha",
+              "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png",
+              "embeds": [{
+                "title": "🔬 CCU Alpha - " + process.env.VERSION,
+                "description": "**Teleport with ease!** Development snapshot for internal testing.\n\n🎵 **What's New:**\n" + changelog,
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility",
+                "color": 16711680,
+                "thumbnail": {
+                  "url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png"
+                },
+                "footer": {
+                  "text": "RGX Mods - RealmGX Community",
+                  "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
+                },
+                "timestamp": process.env.TIMESTAMP
+              }]
+            };
+            const response = await fetch(process.env.DISCORD_WEBHOOK, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+            });
+            const responseText = await response.text();
+            if (!response.ok) {
+              throw new Error(`Discord notification failed: ${response.status} ${response.statusText} ${responseText}`);
+            }
+            console.log(`Discord notification sent. Status: ${response.status}`);
 
       - name: Send Discord Failure Notification
         if: failure()
+        uses: actions/github-script@v7
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: |
-          if [ -z "$DISCORD_WEBHOOK" ]; then
-            echo "Discord webhook not configured, skipping notification"
-            exit 0
-          fi
-          
-          VERSION="${{ steps.extract_version.outputs.version }}"
-          if [ -z "$VERSION" ]; then
-            VERSION="Unknown"
-          fi
-          
-          JSON_PAYLOAD=$(jq -n \
-            --arg version "$VERSION" \
-            --arg run_id "${{ github.run_id }}" \
-            '{
-              "content": "",
+          VERSION: ${{ steps.extract_version.outputs.version }}
+          TIMESTAMP: ${{ steps.extract_version.outputs.timestamp }}
+          RUN_ID: ${{ github.run_id }}
+        with:
+          script: |
+            if (!process.env.DISCORD_WEBHOOK) {
+              throw new Error('DISCORD_WEBHOOK secret is not configured.');
+            }
+
+            const payload = {
               "username": "CCU Build Failed",
               "avatar_url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png",
               "embeds": [{
                 "title": "❌ CCU Build Failed",
                 "description": "The release workflow encountered an error",
-                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/\($run_id)",
+                "url": "https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/" + process.env.RUN_ID,
                 "color": 15158332,
+                "thumbnail": {
+                  "url": "https://raw.githubusercontent.com/DonnieDice/CoordinationCloakUtility/main/images/ccu_logo.png"
+                },
                 "fields": [
                   {
                     "name": "Version",
-                    "value": $version,
+                    "value": process.env.VERSION || 'Unknown',
                     "inline": true
                   },
                   {
                     "name": "Workflow",
-                    "value": "[View Logs](https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/\($run_id))",
+                    "value": "[View Logs](https://github.com/DonnieDice/CoordinationCloakUtility/actions/runs/" + process.env.RUN_ID + ")",
                     "inline": true
                   }
                 ],
                 "footer": {
-                  "text": "RGX Mods - Build System",
+                  "text": "RGX Mods - RealmGX Community",
                   "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
                 },
-                "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'"
+                "timestamp": process.env.TIMESTAMP
               }]
-            }')
-          
-          curl -H "Content-Type: application/json" \
-               -X POST \
-               -d "$JSON_PAYLOAD" \
-               "$DISCORD_WEBHOOK"
+            };
+            const response = await fetch(process.env.DISCORD_WEBHOOK, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+            });
+            const responseText = await response.text();
+            if (!response.ok) {
+              throw new Error(`Discord notification failed: ${response.status} ${response.statusText} ${responseText}`);
+            }
+            console.log(`Discord notification sent. Status: ${response.status}`);
