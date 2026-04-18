@@ -921,16 +921,21 @@ CCU.events = {
 
     PLAYER_EQUIPMENT_CHANGED = function(self, slotID)
         if slotID == GetInventorySlotInfo("BackSlot") then
-            self:HandleBackSlotItem()
-
+            -- Check success BEFORE HandleBackSlotItem, which would nil self.originalCloak
+            -- once the non-teleport cloak is detected back in the slot.
             if self.reEquipAttempted and self.originalCloak then
                 local equippedCloakID = GetInventoryItemID("player", slotID)
                 if equippedCloakID == self.originalCloak then
+                    if self.reEquipTimer then
+                        self.reEquipTimer:Cancel()
+                        self.reEquipTimer = nil
+                    end
                     print(self.CCU_PREFIX .. self.L.REEQUIP_SUCCESS .. (select(2, GetItemInfo(self.originalCloak)) or "Unknown Cloak"))
                     self:ResetCloakProcess()
-                    frame:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED")
                 end
             end
+
+            self:HandleBackSlotItem()
         end
     end,
 
