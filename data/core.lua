@@ -64,7 +64,7 @@ CCU.colors = {
 
 CCU.CCU_PREFIX = "|Tinterface/addons/CoordinationCloakUtility/media/icon:16:16|t - [" .. CCU.colors.prefix .. "CCU|r] "
 CCU.MINIMAP_TOOLTIP_ICON = "|TInterface\\AddOns\\CoordinationCloakUtility\\media\\icon.tga:18:18:0:0|t "
-CCU.MINIMAP_TOOLTIP_TITLE = CCU.MINIMAP_TOOLTIP_ICON .. CCU.colors.prefix .. "Coordination Cloak Utility|r " .. "|cffd9c6ffTeleport Helper|r"
+CCU.MINIMAP_TOOLTIP_TITLE = CCU.MINIMAP_TOOLTIP_ICON .. "|cff8b0941C|r|cffffffffoordination|r |cff8b0941C|r|cffffffffloak|r |cff8b0941U|r|cfffffffftility|r|cff8b0941!|r " .. "|cffd9c6ffTeleport Helper|r"
 
 -- =====================================================================================
 -- Localization Strings
@@ -95,6 +95,7 @@ CCU.L = {
 	WELCOME_MSG_ENABLED = CCU.colors.success .. "Welcome message enabled.|r",
 	WELCOME_MSG_DISABLED = CCU.colors.error .. "Welcome message disabled.|r",
 	TELEPORTATION_IN_PROGRESS = CCU.colors.success .. "Teleportation in progress.|r",
+	PROCESS_STARTED = CCU.colors.success .. " process started.|r",
 	CLOAK_UNEQUIPPED = CCU.colors.info .. "Teleportation cloak unequipped.|r",
 	HIDING_BUTTON = CCU.colors.info .. "Hiding button.|r",
 	PROCESS_RESET = CCU.colors.info .. "Cloak usage process reset.|r",
@@ -742,6 +743,8 @@ function CCU:EquipAndUseCloak(cloakID, cloakLink, source)
         print(self.CCU_PREFIX .. string.format(self.L.CLOAK_ON_CD, cloakLink, remainingTime))
         return
     end
+
+    print(self.CCU_PREFIX .. cloakLink .. self.L.PROCESS_STARTED)
 
     local backSlotID = GetInventorySlotInfo("BackSlot")
     local equippedCloakID = GetInventoryItemID("player", backSlotID)
