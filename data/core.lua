@@ -12,6 +12,7 @@ CCU.frame = frame
 frame:RegisterEvent("ADDON_LOADED")
 frame:RegisterEvent("PLAYER_LOGIN")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+frame:RegisterEvent("LOADING_SCREEN_ENABLED")
 frame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 frame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 frame:RegisterEvent("PLAYER_REGEN_DISABLED") -- Event when combat starts
@@ -34,10 +35,13 @@ CCU.cloaksInitialized = false -- Flag to track cloak initialization
 CCU.suppressNextEquipMessage = false
 CCU.suppressNextPopupButton = false
 CCU.forceDefaultMinimapIcon = false
+CCU.inLoadingScreen = false
 CCU.reEquipAttempted = false -- Flag to track re-equip attempt
 CCU.reEquipStartTime = nil    -- Timestamp when re-equip started
-CCU.reEquipTimeout = 20      -- Timeout duration in seconds
-CCU.reEquipMaxRetries = 3    -- Maximum number of re-equip retries
+CCU.reEquipTimeout = 20      -- Timeout duration in seconds (zone-change fallback only)
+CCU.reEquipRetryCount = 0
+CCU.reEquipRetryMax = 5
+CCU.reEquipRetryDelay = 2
 
 CCU.reEquipTimer = nil -- Timer for re-equip check
 CCU.lastZone = nil -- Last known zone
@@ -605,6 +609,8 @@ function CCU:ResetCloakProcess()
     self.reEquipAttempted = false
     self.reEquipStartTime = nil
     self.waitingToReequip = false
+    self.inLoadingScreen = false
+    self.reEquipRetryCount = 0
     self.forceDefaultMinimapIcon = true
     if self.reEquipTimer then
         self.reEquipTimer:Cancel()
@@ -634,20 +640,13 @@ function CCU:StartReEquipCheck()
     end)
 end
 
--- Function to check for teleportation and re-equip the original cloak
+-- Fallback zone-change ticker: only active if LOADING_SCREEN_ENABLED didn't fire
 function CCU:CheckTeleportAndReequip()
-    if not IsPlayerInWorld() then
-        return
-    end
+    if self.inLoadingScreen then return end
 
-    local currentTime = GetTime()
-    local elapsed = currentTime - (self.reEquipStartTime or 0)
-
+    local elapsed = GetTime() - (self.reEquipStartTime or 0)
     if elapsed > self.reEquipTimeout then
-        if self.reEquipTimer then
-            self.reEquipTimer:Cancel()
-            self.reEquipTimer = nil
-        end
+        if self.reEquipTimer then self.reEquipTimer:Cancel(); self.reEquipTimer = nil end
         print(self.CCU_PREFIX .. self.L.REEQUIP_FAILED)
         self:ResetCloakProcess()
         return
@@ -658,62 +657,60 @@ function CCU:CheckTeleportAndReequip()
     local equippedCloakID = GetInventoryItemID("player", backSlotID)
 
     if zoneChanged then
-        if self.reEquipTimer then
-            self.reEquipTimer:Cancel()
-            self.reEquipTimer = nil
-        end
-        self:ReequipOriginalCloak()
+        if self.reEquipTimer then self.reEquipTimer:Cancel(); self.reEquipTimer = nil end
+        self.reEquipRetryCount = 0
+        self:AttemptReequip()
     elseif equippedCloakID == self.originalCloak then
-        -- This case handles if the re-equip happened before the location check fired.
-        if self.reEquipTimer then
-            self.reEquipTimer:Cancel()
-            self.reEquipTimer = nil
-        end
+        if self.reEquipTimer then self.reEquipTimer:Cancel(); self.reEquipTimer = nil end
         self:ResetCloakProcess()
     end
 end
 
--- Function to re-equip the original cloak after teleportation
-function CCU:ReequipOriginalCloak()
+-- Retrying re-equip: tolerates nil GetItemInfo (cache miss after loading screen) and
+-- silent EquipItemByName failures. PLAYER_EQUIPMENT_CHANGED short-circuits on success.
+function CCU:AttemptReequip()
     if not self.teleportInProgress then return end
-    if self.inCombat then
-        self:NotifyCombatLockdown()
-        return
-    end
-
-    -- If originalCloak is nil or invalid, we shouldn't proceed
-    if not self.originalCloak or not GetItemInfo(self.originalCloak) then
-        self:ResetCloakProcess()
-        return
-    end
+    if self.inCombat then self:NotifyCombatLockdown(); return end
+    if not self.originalCloak then self:ResetCloakProcess(); return end
 
     local backSlotID = GetInventorySlotInfo("BackSlot")
     local equippedCloakID = GetInventoryItemID("player", backSlotID)
-
     if equippedCloakID == self.originalCloak then
         print(self.CCU_PREFIX .. self.colors.success .. "Original cloak is already equipped.|r")
         self:ResetCloakProcess()
-    else
-        if IsPlayerInWorld() then
-            if not self.reEquipAttempted then
-                local originalCloakLink = select(2, GetItemInfo(self.originalCloak))
-                if not originalCloakLink then
-                    self.waitingForItemInfo = true
-                    self.pendingAction = function() self:ReequipOriginalCloak() end
-                    return
-                end
+        return
+    end
 
-                -- Attempt re-equip
-                EquipItemByName(self.originalCloak)
-                print(self.CCU_PREFIX .. self.L.REEQUIP_CLOAK .. originalCloakLink)
-                self.reEquipAttempted = true
-
-                frame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
-            end
+    local itemLink = select(2, GetItemInfo(self.originalCloak))
+    if not itemLink then
+        -- Item cache not populated yet after loading screen; retry
+        self.reEquipRetryCount = self.reEquipRetryCount + 1
+        if self.reEquipRetryCount <= self.reEquipRetryMax then
+            C_Timer.After(self.reEquipRetryDelay, function() self:AttemptReequip() end)
         else
-            -- Player is in loading screen, set flag to attempt re-equip after
-            self.waitingToReequip = true
+            print(self.CCU_PREFIX .. self.L.REEQUIP_FAILED)
+            self:ResetCloakProcess()
         end
+        return
+    end
+
+    if not self.reEquipAttempted then
+        print(self.CCU_PREFIX .. self.L.REEQUIP_CLOAK .. itemLink)
+        self.reEquipAttempted = true
+    end
+
+    EquipItemByName(self.originalCloak)
+
+    self.reEquipRetryCount = self.reEquipRetryCount + 1
+    if self.reEquipRetryCount <= self.reEquipRetryMax then
+        C_Timer.After(self.reEquipRetryDelay, function() self:AttemptReequip() end)
+    else
+        C_Timer.After(self.reEquipRetryDelay, function()
+            if self.teleportInProgress then
+                print(self.CCU_PREFIX .. self.L.REEQUIP_FAILED)
+                self:ResetCloakProcess()
+            end
+        end)
     end
 end
 
@@ -910,15 +907,26 @@ CCU.events = {
 		end)
 	end,
 
+    LOADING_SCREEN_ENABLED = function(self)
+        if self.teleportInProgress then
+            self.inLoadingScreen = true
+            self.waitingToReequip = true
+            if self.reEquipTimer then self.reEquipTimer:Cancel(); self.reEquipTimer = nil end
+        end
+    end,
+
     PLAYER_ENTERING_WORLD = function(self)
+        self.inLoadingScreen = false
         self:InitializeCloaks()
         self:UpdateMinimapButtonPosition()
         self:RefreshMinimapButton()
 
-        if self.waitingToReequip and self.teleportInProgress then
-            -- Delay the re-equip to avoid load screen issues
+        if self.teleportInProgress then
+            if self.reEquipTimer then self.reEquipTimer:Cancel(); self.reEquipTimer = nil end
+            self.waitingToReequip = false
+            self.reEquipRetryCount = 0
             self.reEquipStartTime = GetTime()
-            C_Timer.After(7, function() self:ReequipOriginalCloak() end)
+            C_Timer.After(1, function() self:AttemptReequip() end)
         end
     end,
 
