@@ -68,7 +68,8 @@ CCU.colors = {
 
 CCU.CCU_PREFIX = "|Tinterface/addons/CoordinationCloakUtility/media/icon:16:16|t - [" .. CCU.colors.prefix .. "CCU|r] "
 CCU.MINIMAP_TOOLTIP_ICON = "|TInterface\\AddOns\\CoordinationCloakUtility\\media\\icon.tga:18:18:0:0|t "
-CCU.MINIMAP_TOOLTIP_TITLE = CCU.MINIMAP_TOOLTIP_ICON .. "|cff8b0941C|r|cffffffffoordination|r |cff8b0941C|r|cffffffffloak|r |cff8b0941U|r|cfffffffftility|r|cff8b0941!|r " .. "|cffd9c6ffTeleport Helper|r"
+CCU.MINIMAP_TOOLTIP_TITLE = CCU.MINIMAP_TOOLTIP_ICON .. "|cff8b0941C|r|cffffffffoordination|r |cff8b0941C|r|cffffffffloak|r |cff8b0941U|r|cfffffffftility|r|cff8b0941!|r"
+CCU.MINIMAP_TOOLTIP_SUBTITLE = "|cffd9c6ffTeleport Helper|r"
 
 -- =====================================================================================
 -- Localization Strings
@@ -208,8 +209,9 @@ function CCU:CreateMinimapButton()
 	button:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_LEFT")
 		GameTooltip:ClearLines()
-		GameTooltip:AddLine(CCU.MINIMAP_TOOLTIP_TITLE)
-		GameTooltip:AddLine(" ")
+GameTooltip:AddLine(CCU.MINIMAP_TOOLTIP_TITLE)
+	GameTooltip:AddLine(CCU.MINIMAP_TOOLTIP_SUBTITLE)
+	GameTooltip:AddLine(" ")
 		GameTooltip:AddLine("|cffd9c6ffKeep your teleport cloak flow one click away.|r", 1, 1, 1, true)
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddDoubleLine(CCU.colors.prefix .. "Left-Click|r", CCU.colors.white .. "Equip or use your teleport cloak|r", 1, 1, 1, 1, 1, 1)
